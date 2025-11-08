@@ -127,21 +127,23 @@ export function ProductCategoryPage() {
         </div>
         
         <div className="relative container mx-auto px-4 h-full">
-          <div className="absolute left-1/2 transform -translate-x-1/2 top-12 w-[1024px]">
+          <div className="w-full max-w-[1024px] mx-auto mt-0 px-4">
             {/* Back Button */}
-            <button
-              onClick={() => navigate('/products')}
-              className="bg-transparent border border-white hover:bg-white/10 text-white px-4 py-2 rounded-md flex items-center gap-3 transition-colors mb-12"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 16 16">
-                <path d="M3.33333 8H12.6667" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333" />
-                <path d={svgPaths.p1d405500} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333" />
-              </svg>
-              <span className="text-sm">رجوع إلى المنتجات</span>
-            </button>
+            <div className="mb-4 sm:mb-12">
+              <button
+                onClick={() => navigate('/products')}
+                className="bg-transparent border border-white hover:bg-white/10 text-white px-4 py-2 rounded-md flex items-center gap-3 transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 16 16">
+                  <path d="M3.33333 8H12.6667" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333" />
+                  <path d={svgPaths.p1d405500} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333" />
+                </svg>
+                <span className="text-sm">رجوع إلى المنتجات</span>
+              </button>
+            </div>
 
             {/* Title Section */}
-            <div className="flex items-center justify-end gap-3 mb-8">
+            <div className="flex flex-col sm:flex-row items-center sm:items-end justify-end gap-3 mb-4 sm:mb-8">
               <div className="w-12 h-12 flex items-center justify-center">
                 <svg className="w-12 h-12" fill="none" viewBox="0 0 48 48">
                   <path d={categoryInfo.icon} stroke="#FFC00E" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" />
@@ -151,15 +153,17 @@ export function ProductCategoryPage() {
                   <path d={svgPaths.pd661e00} stroke="#FFC00E" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" />
                 </svg>
               </div>
+
               <div className="bg-[#ffc00e] px-3 py-2 rounded-lg">
                 <span className="text-[#101828]">{categoryInfo.title}</span>
               </div>
-              <h1 className="text-[48px] text-white text-right">
+
+              <h1 className="text-3xl sm:text-[40px] md:text-5xl text-white text-right">
                 {categoryInfo.title}
               </h1>
             </div>
 
-            <p className="text-[18px] text-blue-50 text-right">
+            <p className="text-base md:text-[18px] text-blue-50 text-right">
               {categoryInfo.description}
             </p>
           </div>
@@ -169,10 +173,10 @@ export function ProductCategoryPage() {
       {/* Products Section */}
       <div className="container mx-auto px-4 py-8 max-w-[1024px]">
         {/* Filters */}
-        <div className="flex items-center justify-end gap-3 mb-8">
+  <div className="flex flex-wrap items-center justify-end gap-3 mb-8">
           {/* Price Filter */}
           <div className="relative">
-            <button className="border border-[#d6d6d6] bg-white rounded px-3 py-2 flex items-center gap-4 min-w-[127px]">
+            <button className="border border-[#d6d6d6] bg-white rounded px-3 py-2 flex items-center gap-4 min-w-[110px] sm:min-w-[127px]">
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24">
                 <path d="M6 9L12 15L18 9" stroke="#7F7F7F" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
               </svg>
@@ -182,7 +186,7 @@ export function ProductCategoryPage() {
 
           {/* Rating Filter */}
           <div className="relative">
-            <button className="border border-[#d6d6d6] bg-white rounded px-3 py-2 flex items-center gap-4 min-w-[127px]">
+            <button className="border border-[#d6d6d6] bg-white rounded px-3 py-2 flex items-center gap-4 min-w-[110px] sm:min-w-[127px]">
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24">
                 <path d="M6 9L12 15L18 9" stroke="#7F7F7F" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
               </svg>
@@ -191,12 +195,12 @@ export function ProductCategoryPage() {
           </div>
         </div>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-3 gap-8">
+  {/* Products Grid */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
           {categoryInfo.products.map((product) => (
             <div key={product.id} className="bg-white border border-[#d6d6d6] rounded-lg overflow-hidden">
               {/* Product Image */}
-              <div className="relative h-[192px] overflow-hidden">
+              <div className="relative h-48 sm:h-[192px] overflow-hidden">
                 <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-[rgba(15,22,41,0.4)]"></div>
                 
@@ -213,7 +217,7 @@ export function ProductCategoryPage() {
               </div>
 
               {/* Product Info */}
-              <div className="p-6">
+              <div className="px-4 py-4 sm:p-6">
                 <h3 className="text-[#303030] text-xl mb-1 text-right">{product.name}</h3>
                 <p className="text-[#4a5565] text-sm mb-4 text-right line-clamp-2">{product.description}</p>
 

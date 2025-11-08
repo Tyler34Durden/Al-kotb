@@ -42,8 +42,8 @@ export function AboutPage() {
           />
         </motion.div>
 
-        <div className="relative container mx-auto px-4 max-w-[1200px] h-full flex items-center py-12 md:py-0">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center w-full">
+        <div className="relative container mx-auto px-4 max-w-[1200px] h-full flex items-center py-12 md:py-12 lg:py-0">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 items-start w-full">
             {/* Right Side - Content */}
             <motion.div 
               className="text-right order-2 lg:order-1"
@@ -52,7 +52,7 @@ export function AboutPage() {
               transition={{ duration: 0.8 }}
             >
               <motion.h1 
-                className="text-white text-3xl md:text-5xl mb-4 md:mb-6"
+                className="text-white text-3xl md:text-4xl lg:text-5xl mb-4 md:mb-6"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
@@ -113,14 +113,14 @@ export function AboutPage() {
               transition={{ duration: 0.8, delay: 0.3 }}
             >
               <motion.div 
-                className="rounded-lg overflow-hidden"
+                className="rounded-lg overflow-hidden h-56 md:h-[420px] lg:h-[560px] p-4 bg-white/5 flex items-center justify-center shadow-lg relative z-10"
                 whileHover={{ scale: 1.02, rotate: 1 }}
                 transition={{ duration: 0.3 }}
               >
                 <img 
                   src={imgImageWithFallback2} 
                   alt="شركة القطب" 
-                  className="w-full h-full object-contain object-center"
+                  className="max-w-full max-h-full object-contain"
                 />
               </motion.div>
             </motion.div>
