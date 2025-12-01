@@ -5,12 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import svgPaths from "../../imports/svg-k1ugjyhkoh";
 import svgPathsModal from "../../imports/svg-i910emt9ax";
 import imgContainer from "figma:asset/e4a6a8048d3a77db17873ab45b765804238c62ba.png";
-import imgProject1 from "figma:asset/9a70eb07bff334a3fd4969c8f1d08bdaf9fda892.png";
-import imgProject2 from "figma:asset/5e1c421384e511c054f3196f27e321d21884d8aa.png";
-import imgProject3 from "figma:asset/b4f14083d4aa0b821438776f4c3f538825a6b3d8.png";
-import imgProject4 from "figma:asset/cdcc2660f9d251630b7af7975dbc0827648ab169.png";
-import imgProject5 from "figma:asset/074577e4a3d9d5c75fab40dc283706d4c09ba3fc.png";
-import imgProject6 from "figma:asset/0f95e2d6bd75781ee3d5024f57a9c6d6a017fd35.png";
+
+import { useProjects } from '../../hooks/useMedia';
+import { strapiImageUrl } from '../../lib/strapi';
 
 // Icon Components
 function BuildingIcon({ className = "" }: { className?: string }) {
@@ -122,20 +119,15 @@ interface ProjectModalProps {
 function ProjectModal({ project, onClose }: ProjectModalProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [direction, setDirection] = useState(0);
-  
-  const solutions = [
-    { text: 'معدات مقاومة للانفجار', icon: TruckIcon },
-    { text: 'أنظمة أمان متقدمة', icon: TruckIcon },
-    { text: 'برنامج تدريب شامل للموظفين', icon: TruckIcon }
-  ];
+  // compute display year
+  const displayYear = project.date ? new Date(project.date).getFullYear() : (project.year || (project.publishedAt ? new Date(project.publishedAt).getFullYear() : ''));
 
-  // Create an array of images for the carousel (using the same image 4 times as placeholder)
-  const images = [
-    project.image,
-    project.image,
-    project.image,
-    project.image
-  ];
+  // derive images from gallery if available, otherwise fall back to the single image
+  const images = (project.gallery && Array.isArray(project.gallery) && project.gallery.length)
+    ? project.gallery.map((g: any) => strapiImageUrl(g))
+    : (project.image ? [strapiImageUrl(project.image)] : []);
+
+  const relatedProducts = project.relatedProducts || [];
 
   const nextImage = () => {
     setDirection(1);
@@ -271,7 +263,7 @@ function ProjectModal({ project, onClose }: ProjectModalProps) {
             <div className="flex flex-col gap-0.5 text-sm text-[#4a5565] text-right">
               <p>العميل: {project.client}</p>
               <p>المكان: {project.location}</p>
-              <p>السنة: {project.year}</p>
+              <p>السنة: {displayYear}</p>
             </div>
 
             {/* Title and Badge */}
@@ -283,33 +275,43 @@ function ProjectModal({ project, onClose }: ProjectModalProps) {
             </div>
           </div>
 
-          {/* Description */}
-          <div className="mb-6">
-            <p className="text-[#4a5565] leading-relaxed text-right">
-              {project.description}
-            </p>
+          {/* Description / Content (HTML from CMS) */}
+          <div className="mb-6 prose prose-sm max-w-none text-right">
+            {project.content ? (
+              <div dangerouslySetInnerHTML={{ __html: project.content }} />
+            ) : (
+              <p className="text-[#4a5565] leading-relaxed">{project.description}</p>
+            )}
           </div>
 
-          {/* Solutions Title */}
-          <h3 className="text-xl text-[#1a1a1a] mb-4 text-right">الحلول</h3>
-
-          {/* Solutions Grid */}
-          <div className="grid grid-cols-2 gap-3">
-            {solutions.map((solution, index) => (
-              <motion.div
-                key={index}
-                className="flex items-center gap-2 justify-end"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <span className="text-[#4a5565] text-right">{solution.text}</span>
-                <div className="w-5 h-5 text-[#0f1629] shrink-0">
-                  <solution.icon />
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          {/* Related Products (from CMS) */}
+          {relatedProducts.length > 0 && (
+            <>
+              <h3 className="text-xl text-[#1a1a1a] mb-4 text-right">المنتجات ذات الصلة</h3>
+              <div className="grid grid-cols-1 gap-4">
+                {relatedProducts.map((rp: any) => (
+                  <motion.div key={rp.id} className="bg-white rounded-lg p-4 border flex items-center gap-3" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+                    <div className="w-24 h-16 rounded overflow-hidden bg-gray-100 flex-shrink-0">
+                      {rp.image ? (
+                        <img src={strapiImageUrl(rp.image)} alt={rp.title} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full bg-gray-200" />
+                      )}
+                    </div>
+                    <div className="flex-1 text-right">
+                      <div className="font-medium">{rp.title}</div>
+                      {rp.short_description && <div className="text-sm text-gray-600 line-clamp-2">{rp.short_description}</div>}
+                    </div>
+                    <div className="flex-shrink-0">
+                      <button className="bg-[#13499d] text-white px-3 py-1 rounded text-sm" onClick={() => window.location.href = `/products/${rp.slug || rp.id}`}>
+                        عرض المنتج
+                      </button>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </>
+          )}
         </div>
 
         {/* Border */}
@@ -324,80 +326,7 @@ export function ProjectsPage() {
   const [selectedSector, setSelectedSector] = useState('all');
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
 
-  const projects = [
-    {
-      id: 1,
-      title: 'تطوير مطار طرابلس الدولي',
-      sector: 'aviation',
-      sectorName: 'الطيران المدني',
-      client: 'هيئة الطيران المدني',
-      location: 'طرابلس',
-      duration: 'المدة: 8 أشهر',
-      year: '2023',
-      description: 'مشروع شامل لتطوي�� أنظمة مناولة الأمتعة والبضائع في مطار طرابلس الدولي',
-      image: imgProject1
-    },
-    {
-      id: 2,
-      title: 'مشروع ميناء بنغازي التجاري',
-      sector: 'shipping',
-      sectorName: 'الشحن واللوجستيات',
-      client: 'شركة موانئ ليبيا',
-      location: 'بنغازي',
-      duration: 'المدة: 6 أشهر',
-      year: '2023',
-      description: 'تجهيز الميناء بأحدث معدات الرفع والتحميل لزيادة الطاقة الاستيعابية',
-      image: imgProject2
-    },
-    {
-      id: 3,
-      title: 'مجمع البريقة الصناعي',
-      sector: 'oil-gas',
-      sectorName: 'النفط والغاز',
-      client: 'الشركة الليبية للنفط',
-      location: 'البريقة',
-      duration: 'المدة: 12 شهر',
-      year: '2022',
-      description: 'توريد معدا�� متخصصة ومقاومة للانفجار لمجمع البريقة النفطي',
-      image: imgProject3
-    },
-    {
-      id: 4,
-      title: 'مشروع المدينة الجديدة السكنية',
-      sector: 'construction',
-      sectorName: 'البناء والتشييد',
-      client: 'شركة التطوير العمراني',
-      location: 'طرابلس الجديدة',
-      duration: 'المدة: 10 أشهر',
-      year: '2023',
-      description: 'تجهيز موقع البناء بمعدات الرفع والنقل للمشروع السكني الضخم',
-      image: imgProject4
-    },
-    {
-      id: 5,
-      title: 'مصنع الحديد والصلب مصراتة',
-      sector: 'manufacturing',
-      sectorName: 'التصنيع والإنتاج',
-      client: 'شركة الحديد والصلب',
-      location: 'مصراتة',
-      duration: 'المدة: 14 شهر',
-      year: '2022',
-      description: 'تحديث خطوط الإنتاج وأنظمة المناولة في مصنع الحديد والصلب',
-      image: imgProject5
-    },
-    {
-      id: 6,
-      title: 'سلسلة متاجر الخير الكبرى',
-      sector: 'retail',
-      sectorName: 'التجارة والمتاجر',
-      client: 'مجموعة الخير التجارية',
-      location: 'طرابلس، بنغازي، مصراتة',
-      duration: 'المدة: 4 أشهر',
-      year: '2023',
-      description: 'تجهيز المستودعات وأنظمة التخزين لسلسلة متاجر في ثلاث مدن',
-      image: imgProject6
-    }
-  ];
+  // projects will come from the API via `useProjects` hook
 
   const sectors = [
     { key: 'all', name: 'جميع القطاعات', icon: BuildingIcon },
@@ -409,9 +338,17 @@ export function ProjectsPage() {
     { key: 'retail', name: 'التجارة والمتاجر', icon: UsersIcon }
   ];
 
-  const filteredProjects = selectedSector === 'all' 
-    ? projects 
-    : projects.filter(p => p.sector === selectedSector);
+  const { data: projectsData, isLoading: projectsLoading, isError: projectsError } = useProjects();
+
+  // Use only projects coming from the API. When not available, show an empty list (or loading/error states).
+  const projectsList = projectsData || [];
+
+  const filteredProjects = selectedSector === 'all'
+    ? projectsList
+    : projectsList.filter(p => {
+      const sectorField = (p as any).sector || (p.raw && p.raw.sector) || (p.raw && p.raw.attributes && p.raw.attributes.sector);
+      return sectorField === selectedSector;
+    });
 
   return (
     <div className="bg-[#f6f6f6] min-h-screen w-full" dir="rtl">
@@ -448,45 +385,16 @@ export function ProjectsPage() {
         </div>
       </div>
 
-      {/* Filter Buttons */}
-      <motion.div 
-        className="bg-[#f6f6f6] py-6 md:py-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-      >
-        <div className="container mx-auto px-4 max-w-[1200px]">
-          <div className="flex flex-wrap gap-3 md:gap-6 justify-end">
-            {sectors.map((sector, index) => {
-              const IconComponent = sector.icon;
-              return (
-                <motion.button
-                  key={sector.key}
-                  onClick={() => setSelectedSector(sector.key)}
-                  className={`px-4 py-2 rounded-md flex items-center gap-2 transition-all ${
-                    selectedSector === sector.key
-                      ? 'bg-[#13499d] text-white shadow-lg'
-                      : 'bg-white text-[#303030] border border-[#d6d6d6] hover:border-[#13499d]'
-                  }`}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.5 + index * 0.05 }}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <span className="text-sm md:text-base">{sector.name}</span>
-                  <div className="w-4 h-4">
-                    <IconComponent />
-                  </div>
-                </motion.button>
-              );
-            })}
-          </div>
-        </div>
-      </motion.div>
+      
 
       {/* Projects Grid */}
       <div className="container mx-auto px-4 py-8 md:py-16 max-w-[1200px]">
+        {projectsLoading && (
+          <div className="py-12 text-center text-gray-600">جارٍ تحميل المشاريع...</div>
+        )}
+        {projectsError && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-md text-right">فشل تحميل المشاريع من الخادم.</div>
+        )}
         <AnimatePresence mode="wait">
           <motion.div 
             key={selectedSector}
@@ -496,7 +404,10 @@ export function ProjectsPage() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            {filteredProjects.map((project, index) => (
+            {filteredProjects.map((project, index) => {
+              const cardYear = project.date ? new Date(project.date).getFullYear() : (project.year || (project.publishedAt ? new Date(project.publishedAt).getFullYear() : ''));
+              const displayDate = project.date ? new Date(project.date).toLocaleDateString('ar-EG') : (project.duration || project.year || cardYear);
+              return (
               <motion.div
                 key={project.id}
                 className="bg-white rounded-xl overflow-hidden border border-[#d6d6d6] cursor-pointer group"
@@ -509,7 +420,7 @@ export function ProjectsPage() {
                 {/* Project Image */}
                 <div className="relative h-48 md:h-56 overflow-hidden">
                   <motion.img
-                    src={project.image}
+                    src={project.image || (project.gallery && project.gallery[0])}
                     alt={project.title}
                     className="w-full h-full object-cover"
                     whileHover={{ scale: 1.1 }}
@@ -524,7 +435,7 @@ export function ProjectsPage() {
                     animate={{ scale: 1, rotate: 0 }}
                     transition={{ delay: 0.3 + index * 0.1, type: "spring" }}
                   >
-                    {project.year}
+                    {cardYear}
                   </motion.div>
                   
                   {/* Sector Badge */}
@@ -560,7 +471,7 @@ export function ProjectsPage() {
                     </div>
                     
                     <div className="flex items-center gap-2 justify-end text-sm text-[#7f7f7f]">
-                      <span>{project.duration}</span>
+                      <span>{displayDate}</span>
                       <div className="w-4 h-4">
                         <CalendarIcon />
                       </div>
@@ -577,7 +488,8 @@ export function ProjectsPage() {
                   </motion.button>
                 </div>
               </motion.div>
-            ))}
+            );
+          })}
           </motion.div>
         </AnimatePresence>
 
@@ -617,10 +529,13 @@ export function ProjectsPage() {
               لديك مشروع في ذهنك؟
             </h2>
             <p className="text-lg md:text-xl text-[#303030] mb-6 md:mb-8">
-              دعنا نساعدك في تحقيق رؤيتك بخؤتنا و معداتنا المتطو��ة
+              دعنا نساعدك في تحقيق رؤيتك بخبرتنا ومعداتنا المتطورة
             </p>
-            <motion.button 
-              onClick={() => navigate('/contact')}
+            <motion.a
+              href="https://wa.me/218911286734"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="فتح محادثة واتساب"
               className="bg-[#f6f6f6] border border-[#13499d] text-[#13499d] hover:bg-[#13499d] hover:text-white transition-colors px-8 py-3 rounded-md inline-flex items-center gap-2"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -629,7 +544,7 @@ export function ProjectsPage() {
                 <PhoneIcon />
               </div>
               <span>اتصل بنا الآن</span>
-            </motion.button>
+            </motion.a>
           </motion.div>
         </div>
       </motion.div>
@@ -638,7 +553,7 @@ export function ProjectsPage() {
       <AnimatePresence>
         {selectedProject !== null && (
           <ProjectModal
-            project={projects.find(p => p.id === selectedProject)!}
+            project={projectsList.find((p: any) => p.id === selectedProject)!}
             onClose={() => setSelectedProject(null)}
           />
         )}

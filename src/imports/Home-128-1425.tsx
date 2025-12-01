@@ -1083,13 +1083,20 @@ function Icon6() {
 
 function Button3() {
   return (
-    <div className="absolute bg-[#f6f6f6] h-[40px] left-[calc(50%-0.2px)] rounded-[6px] top-0 translate-x-[-50%] w-[188px]" data-name="Button">
+    <a
+      href="https://wa.me/218911286734"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="فتح محادثة واتساب"
+      className="absolute bg-[#f6f6f6] h-[40px] left-[calc(50%-0.2px)] rounded-[6px] top-0 translate-x-[-50%] w-[188px] inline-flex items-center justify-center"
+      data-name="Button"
+    >
       <div aria-hidden="true" className="absolute border border-[#13499d] border-solid inset-0 pointer-events-none rounded-[6px]" />
       <Icon6 />
-      <p className="absolute font-['Cairo:SemiBold',sans-serif] font-semibold leading-[20px] left-[calc(50%-39px)] not-italic text-[#13499d] text-[16px] text-nowrap top-[9.8px] whitespace-pre" dir="auto">
+      <span className="font-['Cairo:SemiBold',sans-serif] font-semibold leading-[20px] not-italic text-[#13499d] text-[16px] whitespace-pre" dir="auto">
         اتصل بنا الآن
-      </p>
-    </div>
+      </span>
+    </a>
   );
 }
 

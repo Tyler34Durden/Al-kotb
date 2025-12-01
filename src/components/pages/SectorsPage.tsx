@@ -127,7 +127,7 @@ export function SectorsPage() {
                         className="w-full bg-[#13499d] hover:bg-[#0f1629] group/btn"
                         onClick={() => {
                           // In a real app, this would navigate to the sector page
-                          console.log(`Navigate to ${sector.id}`);
+                          // debug log removed
                         }}
                       >
                         <span>اعرف المزيد</span>

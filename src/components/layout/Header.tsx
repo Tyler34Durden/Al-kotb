@@ -18,9 +18,9 @@ export function Header({ currentPage, onPageChange }: HeaderProps) {
     { key: 'products' as Page, label: 'المنتجات' },
     { key: 'solutions' as Page, label: 'الحلول' },
     { key: 'services' as Page, label: 'الخدمات' },
+    { key: 'partners' as Page, label: 'الشركاء' },
     { key: 'projects' as Page, label: 'المشاريع' },
     { key: 'media' as Page, label: 'الميديا' },
-    { key: 'partners' as Page, label: 'الشركاء' },
     { key: 'about' as Page, label: 'من نحن' },
     { key: 'contact' as Page, label: 'تواصل' },
   ];

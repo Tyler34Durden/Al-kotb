@@ -1,13 +1,11 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { useEffect, useState } from 'react';
+import { motion } from 'motion/react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { 
   Globe,
   Award,
-  Users,
-  Handshake,
   CheckCircle,
   Star,
   ExternalLink,
@@ -18,99 +16,87 @@ import {
 } from 'lucide-react';
 import { ImageWithFallback } from '../figma/ImageWithFallback';
 
-const partners = [
-  {
-    id: 1,
-    name: 'Toyota Material Handling',
-    logo: 'https://images.unsplash.com/photo-1611176682835-871a38ddc9d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3JrbGlmdCUyMGVxdWlwbWVudCUyMHByb2R1Y3QlMjBjYXRhbG9nfGVufDF8fHx8MTc1ODQ4ODg4Mnww&ixlib=rb-4.1.0&q=80&w=1080',
-    country: 'اليابان',
-    since: '2018',
-    category: 'الرافعات الشوكية والمعدات اللوجستية',
-    color: '#e60012',
-    products: [
-      'رافعات شوكية كهربائية وديزل',
-      'معدات مناولة المواد',
-      'أنظمة التشغيل الآلي',
-      'حلول اللوجستيات المتكاملة'
-    ],
-    description: 'الشركة الرائدة عالمياً في صناعة الرافعات الشوكية ومعدات المناولة',
-    achievements: [
-      'أكثر من 80 عاماً من الخبرة',
-      'الرقم 1 عالمياً في الرافعات الشوكية',
-      'حضور في أكثر من 190 دولة',
-      'تقنيات صديقة للبيئة'
-    ]
-  },
-  {
-    id: 2,
-    name: 'Jungheinrich',
-    logo: 'https://images.unsplash.com/photo-1560596205-8fb48c7ef200?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwc3RvcmFnZSUyMHJhY2tzJTIwc2NhZmZvbGRpbmd8ZW58MXx8fHwxNzU4NDg4ODg1fDA&ixlib=rb-4.1.0&q=80&w=1080',
-    country: 'ألمانيا',
-    since: '2019',
-    category: 'أنظمة التخزين والأتمتة',
-    color: '#ffcc00',
-    products: [
-      'أنظمة التخزين الآلية',
-      'رفوف التخزين المتقدمة',
-      'أنظمة إدارة المستودعات',
-      'حلول التخزين الذكية'
-    ],
-    description: 'رائدة في تقنيات التخزين الآلي وحلول المستودعات الذكية',
-    achievements: [
-      'أكثر من 70 عاماً في السوق',
-      'رائدة في الأتمتة الداخلية',
-      'تقنيات توفير الطاقة',
-      'حلول مخصصة للعملاء'
-    ]
-  },
-  {
-    id: 3,
-    name: 'Still GmbH',
-    logo: 'https://images.unsplash.com/photo-1565954786194-d22abeaac3ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwZXF1aXBtZW50JTIwbWFpbnRlbmFuY2UlMjBzZXJ2aWNlfGVufDF8fHx8MTc1ODQ4ODgzM3ww&ixlib=rb-4.1.0&q=80&w=1080',
-    country: 'ألمانيا',
-    since: '2020',
-    category: 'المعدات الصناعية المتخصصة',
-    color: '#003d7a',
-    products: [
-      'معدات المناولة الدقيقة',
-      'رافعات الممرات الضيقة',
-      'معدات الورش المتخصصة',
-      'أنظمة التحكم المتقدمة'
-    ],
-    description: 'متخصصة في المعدات عالية الدقة والحلول المبتكرة',
-    achievements: [
-      'تقنيات حاصلة على براءات اختراع',
-      'معدات عالية الدقة',
-      'كفاءة في استهلاك الطاقة',
-      'تصاميم مبتكرة'
-    ]
-  },
-  {
-    id: 4,
-    name: 'Crown Equipment',
-    logo: 'https://images.unsplash.com/photo-1447933601403-0c6688de566e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3YXJlaG91c2UlMjBvcGVyYXRpb24lMjB0ZWNobm9sb2d5fGVufDF8fHx8MTc1ODQ4ODgzOXww&ixlib=rb-4.1.0&q=80&w=1080',
-    country: 'أمريكا',
-    since: '2021',
-    category: 'معدات المستودعات المتقدمة',
-    color: '#f7941d',
-    products: [
-      'رافعات الطلبيات',
-      'معدات التخزين العمودي',
-      'أنظمة الطاقة المتقدمة',
-      'تقنيات السلامة'
-    ],
-    description: 'رائدة في معدات المستودعات وتقنيات السلامة المتقدمة',
-    achievements: [
-      'أكثر من 75 عاماً من الابتكار',
-      'معايير سلامة عالمية',
-      'تقنيات موفرة للطاقة',
-      'خدمة عملاء متميزة'
-    ]
-  }
-];
+// We'll fetch partners from Strapi. The API returns objects with `name`, `country`, `since`, `industry` and `description`, plus an `image` object with `url` or `formats`.
 
 export function PartnersPage() {
-  const [selectedPartner, setSelectedPartner] = useState<number | null>(null);
+  const [partners, setPartners] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const STRAPI_HOST = 'http://102.213.183.190:1337';
+
+  function toAbsoluteUrl(path?: string | null) {
+    if (!path) return null;
+    if (path.startsWith('http')) return path;
+    return `${STRAPI_HOST}${path}`;
+  }
+
+  function parseDescription(desc?: string) {
+    if (!desc) return { description: '', products: [], achievements: [] };
+    const lines = desc.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    const products: string[] = [];
+    const achievements: string[] = [];
+    let mainDesc = '';
+    let section: 'main' | 'products' | 'achievements' = 'main';
+    for (const line of lines) {
+      const l = line.replace(/：/g, ':');
+      if (/^المنتجات/i.test(l)) { section = 'products'; continue; }
+      if (/^الإنجازات|^الانجازات/i.test(l)) { section = 'achievements'; continue; }
+      if (section === 'main') {
+        mainDesc += (mainDesc ? '\n' : '') + l;
+      } else if (section === 'products') {
+        products.push(...l.split(/[,،]/).map(s => s.trim()).filter(Boolean));
+      } else if (section === 'achievements') {
+        achievements.push(l);
+      }
+    }
+    return { description: mainDesc, products, achievements };
+  }
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(`${STRAPI_HOST}/api/partners?populate=*`)
+      .then(res => res.json())
+      .then((payload) => {
+        const items = (payload?.data || []).map((d: any) => {
+          const attrs = d;
+          const imgAttr = attrs.image?.formats ? attrs.image : attrs.image || null;
+          // Support multiple shapes
+          const imgObj = imgAttr?.formats ? imgAttr : (attrs.image?.data?.attributes || attrs.image?.attributes || attrs.image || null);
+          const imgUrl = imgObj?.formats?.medium?.url || imgObj?.formats?.small?.url || imgObj?.url || null;
+          const parsed = parseDescription(attrs.description);
+          return {
+            id: d.id ?? attrs.id,
+            name: attrs.name,
+            country: attrs.country,
+            since: attrs.since,
+            category: attrs.industry || attrs.category || '',
+            color: '#13499d',
+            logo: toAbsoluteUrl(imgUrl),
+            description: parsed.description || attrs.description || '',
+            products: parsed.products.length ? parsed.products : [],
+            achievements: parsed.achievements.length ? parsed.achievements : [],
+          };
+        });
+
+        // Deduplicate partners by normalized name (trim + lowercase), preserving first occurrence
+        const seen = new Set<string>();
+        const deduped = items.filter(p => {
+          const key = (p.name || '').toString().trim().toLowerCase();
+          if (!key) return true; // keep entries without a name
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+
+        setPartners(deduped);
+      })
+      .catch((err) => {
+        console.error('Failed to fetch partners', err);
+        setError('فشل في جلب بيانات الشركاء');
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -143,16 +129,13 @@ export function PartnersPage() {
     <div className="min-h-screen bg-background" dir="rtl">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-[#13499d] via-[#0f1629] to-[#13499d] text-white py-16 md:py-20 overflow-hidden">
-        {/* Animated Background */}
-        <motion.div 
-          className="absolute inset-0 opacity-10"
-          animate={{
-            backgroundPosition: ['0% 0%', '100% 100%'],
-          }}
-          transition={{ duration: 20, repeat: Infinity, repeatType: 'reverse' }}
+        {/* Hero background image */}
+        <div
+          className="absolute inset-0 opacity-10 bg-cover bg-center"
           style={{
-            backgroundImage: 'linear-gradient(60deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%)',
-            backgroundSize: '200% 200%'
+            backgroundImage: "url('/src/assets/image00045.jpeg')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
           }}
         />
         
@@ -163,16 +146,7 @@ export function PartnersPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <motion.div 
-              className="inline-block mb-6"
-              animate={{ 
-                scale: [1, 1.1, 1],
-                rotate: [0, 5, -5, 0]
-              }}
-              transition={{ duration: 3, repeat: Infinity }}
-            >
-              <Handshake className="w-16 h-16 text-amber-400" />
-            </motion.div>
+            {/* Handshake icon removed per request */}
             
             <h1 className="text-4xl md:text-5xl mb-4">شركاؤنا العالميون</h1>
             <p className="text-xl text-blue-100 mb-8">
@@ -187,7 +161,7 @@ export function PartnersPage() {
               animate="visible"
             >
               {[
-                { icon: Globe, label: 'شريك عالمي', value: '15+' },
+                { icon: Globe, label: 'شريك عالمي', value: '9+' },
                 { icon: Award, label: 'علامة تجارية', value: '25+' },
                 { icon: Package, label: 'منتج', value: '500+' },
                 { icon: TrendingUp, label: 'سنة خبرة', value: '12+' }
@@ -239,15 +213,13 @@ export function PartnersPage() {
             className="grid grid-cols-1 md:grid-cols-2 gap-8"
             variants={containerVariants}
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
+            animate="visible"
           >
             {partners.map((partner, index) => (
               <motion.div 
                 key={partner.id}
                 variants={itemVariants}
                 whileHover={{ y: -10 }}
-                onClick={() => setSelectedPartner(selectedPartner === partner.id ? null : partner.id)}
               >
                 <Card className="h-full overflow-hidden border-2 hover:border-[#13499d] transition-all duration-300 cursor-pointer group">
                   <CardHeader className="relative">
@@ -320,87 +292,31 @@ export function PartnersPage() {
                       {partner.description}
                     </motion.p>
 
-                    {/* Products */}
-                    <div className="mb-4">
-                      <h4 className="font-semibold text-[#0f1629] mb-3 flex items-center gap-2 justify-end">
-                        <span>المنتجات</span>
-                        <Package className="w-4 h-4" style={{ color: partner.color }} />
-                      </h4>
-                      <ul className="space-y-2">
-                        {partner.products.map((product, idx) => (
-                          <motion.li
-                            key={idx}
-                            className="flex items-start gap-2 text-sm text-gray-600 justify-end"
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: idx * 0.05 }}
-                          >
-                            <span>{product}</span>
-                            <motion.div
-                              whileHover={{ scale: 1.3, rotate: 360 }}
-                              transition={{ duration: 0.3 }}
-                            >
-                              <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: partner.color }} />
-                            </motion.div>
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </div>
+                    {/* Products (rendered as descriptive sentence rather than list) */}
+                    {/* Products removed: rendering uses description elsewhere */}
 
-                    {/* Achievements */}
-                    <AnimatePresence>
-                      {selectedPartner === partner.id && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="pt-4 border-t mt-4">
-                            <h4 className="font-semibold text-[#0f1629] mb-3 flex items-center gap-2 justify-end">
-                              <span>الإنجازات</span>
-                              <Award className="w-4 h-4" style={{ color: partner.color }} />
-                            </h4>
-                            <ul className="space-y-2">
-                              {partner.achievements.map((achievement, idx) => (
-                                <motion.li
-                                  key={idx}
-                                  className="flex items-start gap-2 text-sm text-gray-600 justify-end"
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: idx * 0.05 }}
-                                >
-                                  <span>{achievement}</span>
-                                  <Star className="w-4 h-4 flex-shrink-0 mt-0.5 text-amber-500 fill-amber-500" />
-                                </motion.li>
-                              ))}
-                            </ul>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-
-                    {/* View More Button */}
-                    <motion.div 
-                      className="mt-4 pt-4 border-t"
-                      whileHover={{ scale: 1.02 }}
-                    >
-                      <Button 
-                        variant="outline" 
-                        className="w-full group/btn"
-                        style={{ borderColor: partner.color, color: partner.color }}
+                    {/* Achievements (always visible) */}
+                    {partner.achievements && partner.achievements.length > 0 && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
                       >
-                        <motion.span
-                          animate={{ x: [0, -5, 0] }}
-                          transition={{ duration: 1.5, repeat: Infinity }}
-                        >
-                          {selectedPartner === partner.id ? 'إخفاء التفاصيل' : 'عرض المزيد'}
-                        </motion.span>
-                        <ExternalLink className="w-4 h-4 mr-2 group-hover/btn:rotate-45 transition-transform" />
-                      </Button>
-                    </motion.div>
+                        <div className="pt-4 mt-4">
+                          <motion.p
+                            className="text-gray-700"
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.1 }}
+                          >
+                            {partner.achievements.join('؛ ')}
+                          </motion.p>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* View More button removed per request */}
                   </CardContent>
                 </Card>
               </motion.div>
@@ -409,47 +325,28 @@ export function PartnersPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <motion.section 
-        className="py-16 bg-gradient-to-r from-[#13499d] to-[#0f1629] text-white"
+      {/* CTA Section (WhatsApp) */}
+      <motion.section
+        className="bg-white py-12 md:py-16"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        <div className="container mx-auto px-4 text-center max-w-[1200px]">
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.div
-              animate={{ 
-                scale: [1, 1.1, 1],
-                rotate: [0, 10, -10, 0]
-              }}
-              transition={{ duration: 4, repeat: Infinity }}
-            >
-              <Users className="w-16 h-16 mx-auto mb-6 text-amber-400" />
-            </motion.div>
-            <h2 className="text-3xl md:text-4xl mb-4">هل تريد أن تصبح شريكاً؟</h2>
-            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              نرحب بالشراكات الجديدة مع الشركات المتخصصة في المعدات الصناعية
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button size="lg" className="bg-amber-500 hover:bg-amber-600 text-[#0f1629]">
-                  تواصل معنا للشراكة
-                </Button>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-[#13499d]">
-                  تحميل معلومات الشراكة
-                </Button>
-              </motion.div>
-            </div>
-          </motion.div>
+        <div className="container mx-auto px-4 max-w-[1200px]">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl text-[#303030] mb-4 md:mb-6">هل تريد أن تصبح شريكاً؟</h2>
+            <p className="text-lg md:text-xl text-[#303030] mb-6 md:mb-8">نرحب بالشراكات الجديدة مع الشركات المتخصصة في المعدات الصناعية</p>
+
+            <a href="https://wa.me/218911286734" target="_blank" rel="noopener noreferrer" aria-label="فتح محادثة واتساب" className="bg-white border border-[#13499d] text-[#13499d] hover:bg-[#13499d] hover:text-white transition-colors px-8 py-3 rounded-md inline-flex items-center gap-2">
+              <div className="w-4 h-4">
+                <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9.22133 11.0453C9.35902 11.1086 9.51413 11.123 9.66113 11.0863C9.80812 11.0496 9.93822 10.9639 10.03 10.8433L10.2667 10.5333C10.3909 10.3677 10.5519 10.2333 10.737 10.1408C10.9222 10.0482 11.1263 10 11.3333 10H13.3333C13.687 10 14.0261 10.1405 14.2761 10.3905C14.5262 10.6406 14.6667 10.9797 14.6667 11.3333V13.3333C14.6667 13.687 14.5262 14.0261 14.2761 14.2761C14.0261 14.5262 13.687 14.6667 13.3333 14.6667C10.1507 14.6667 7.09849 13.4024 4.84805 11.1519C2.59762 8.90151 1.33333 5.84926 1.33333 2.66667C1.33333 2.31304 1.47381 1.97391 1.72386 1.72386C1.97391 1.47381 2.31304 1.33333 2.66667 1.33333H4.66667C5.02029 1.33333 5.35943 1.47381 5.60948 1.72386C5.85952 1.97391 6 2.31304 6 2.66667V4.66667C6 4.87366 5.95181 5.07781 5.85924 5.26295C5.76667 5.44809 5.63226 5.60914 5.46667 5.73333L5.15467 5.96733C5.03228 6.06078 4.94601 6.19372 4.91053 6.34357C4.87504 6.49341 4.89252 6.65092 4.96 6.78933C5.87112 8.63991 7.36962 10.1365 9.22133 11.0453Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333"></path>
+                </svg>
+              </div>
+              <span>اتصل بنا الآن</span>
+            </a>
+          </div>
         </div>
       </motion.section>
     </div>

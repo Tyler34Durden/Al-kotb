@@ -1398,7 +1398,7 @@ function Footer2() {
   return (
     <div className="h-[28px] relative shrink-0 w-[141.9px]" data-name="Footer">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid box-border h-[28px] relative w-[141.9px]">
-        <p className="absolute font-['Cairo:Bold',sans-serif] font-bold leading-[28px] left-[142px] not-italic text-[18px] text-blue-50 text-right top-[-0.2px] translate-x-[-100%] w-[142px]">+218 21 123 4567</p>
+        <p dir="ltr" className="absolute font-['Cairo:Bold',sans-serif] font-bold leading-[28px] left-[142px] not-italic text-[18px] text-blue-50 text-right top-[-0.2px] translate-x-[-100%] w-[142px]">+218 91 128 6734</p>
       </div>
     </div>
   );
@@ -1430,7 +1430,7 @@ function Footer3() {
   return (
     <div className="h-[28px] relative shrink-0 w-[115.725px]" data-name="Footer">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid box-border h-[28px] relative w-[115.725px]">
-        <p className="absolute font-['Cairo:Bold',sans-serif] font-bold leading-[28px] left-[116px] not-italic text-[18px] text-blue-50 text-nowrap text-right top-[-0.2px] translate-x-[-100%] whitespace-pre">info@alqotb.ly</p>
+        <p dir="ltr" className="absolute font-['Cairo:Bold',sans-serif] font-bold leading-[28px] left-[116px] not-italic text-[18px] text-blue-50 text-nowrap text-right top-[-0.2px] translate-x-[-100%] whitespace-pre">Alkotobcompany@gmail.com</p>
       </div>
     </div>
   );

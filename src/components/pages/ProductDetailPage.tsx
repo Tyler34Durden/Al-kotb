@@ -5,46 +5,43 @@ import imgContainer from "figma:asset/5c630bc29d41ef8bd3671227fa3f1a7a04e02690.p
 import imgImageWithFallback2 from "figma:asset/9c5982e7573c50fa5da560993a2457e99d4e031b.png";
 import imgImageWithFallback3 from "figma:asset/b512b33e58793318e7c126751fd19b9a67e02147.png";
 import imgImageWithFallback4 from "figma:asset/2f3c462fba2a830e4742a5fb587958214aeb9204.png";
+import { useProduct } from '../../hooks/useMedia';
+import { strapiImageUrl } from '../../lib/strapi';
 
 export function ProductDetailPage() {
   const { category, productId } = useParams<{ category: string; productId: string }>();
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  // Mock product data - في التطبيق الحقيقي، سيتم جلب هذا من قاعدة البيانات
-  const product = {
-    id: productId,
-    name: 'رافعة شوكية كهربائية',
-    model: 'EFG 320 Pro',
-    category: 'معدات المناولة',
-    description: 'قوة هائلة لمواجهة التحديات الخارجية وتشغيل فعال وصديق للبيئة في الداخل، فإن الرافعة الشوكية الهوائية الكهربائية من تويوتا بجهد 48 فولت هي الحل الأمثل لعملك.',
-    fullDescription: 'تجمع رافعتنا الشوكية الكهربائية بين القوة والكفاءة والموثوقية. مصممة خصيصًا للعمل في البيئات الداخلية والخارجية، توفر هذه الرافعة أداءً استثنائيًا مع تقليل التكاليف التشغيلية. مزودة بأحدث تقنيات السلامة وأنظمة التحكم الذكية، مما يجعلها الخيار الأمثل للمستودعات والمصانع.',
-    images: [imgImageWithFallback2, imgImageWithFallback3, imgImageWithFallback4, imgImageWithFallback2],
-    specifications: {
-      'سعة التحميل': '1.5-2 طن',
-      'سرعة السفر بحمولة كاملة': '20 كم/ساعة',
-      'الفولتية': '48 فولت',
-      'ارتفاع الرفع': '4.5 متر',
-      'نصف قطر الدوران': '2.1 متر',
-      'نوع البطارية': 'ليثيوم أيون',
-      'وزن المعدة': '2800 كجم',
-      'عرض الممر': '3.5 متر'
-    },
-    features: [
-      'نظام أمان متطور مع مستشعرات ذكية',
-      'بطارية ليثيوم أيون طويلة العمر',
-      'شاشة رقمية لعرض جميع المعلومات',
-      'مقعد مريح مع تعديل متعدد',
-      'نظام تعليق هيدروليكي متقدم',
-      'إضاءة LED عالية الكفاءة',
-      'نظام فرامل إلكتروني',
-      'حماية من الحمل الزائد'
-    ],
-    warranty: '3 سنوات أو 6000 ساعة تشغيل',
-    price: 'السعر عند الطلب',
-    inStock: true
+  // Determine identifier param (support /products/:id and /products/:category/:productId)
+  const formatSize = (size: any) => {
+    if (!size && size !== 0) return '';
+    const n = typeof size === 'string' ? parseFloat(size) : Number(size);
+    if (Number.isNaN(n)) return String(size);
+    if (n >= 1024) {
+      const kb = n / 1024;
+      if (kb >= 1024) return `${(kb / 1024).toFixed(1)} MB`;
+      return `${kb.toFixed(1)} KB`;
+    }
+    return `${n}${String(size).includes('.') ? '' : ' KB'}`;
   };
+  const params = useParams<Record<string, string | undefined>>();
+  const rawId = params.productId || params.id || params.product || params['*'] || productId || params.slug;
+  const identifier = rawId || productId || params.category || undefined;
+
+  const { data: product, isLoading: productLoading, isError: productError } = useProduct(identifier);
+
+  if (productLoading) return <div className="container mx-auto px-4 py-12">جارٍ تحميل المنتج...</div>;
+  if (productError) return <div className="container mx-auto px-4 py-12 text-red-600">تعذر تحميل المنتج. الرجاء المحاولة لاحقاً.</div>;
+  if (!product) return <div className="container mx-auto px-4 py-12">المنتج غير موجودة</div>;
+
+  // local state fallbacks
+  const images = (product && Array.isArray(product.images) && product.images.length) ? product.images : [imgImageWithFallback2, imgImageWithFallback3, imgImageWithFallback4];
+  const specifications = product?.specifications?.rows || product?.specifications || {};
+  const features = product?.benefits ? (product.benefits.map((b: any) => `${b.label}: ${b.value}`)) : [];
+  const inStock = product ? true : true;
 
   const relatedProducts = [
     {
@@ -72,20 +69,7 @@ export function ProductDetailPage() {
 
   return (
     <div className="bg-[#f6f6f6] min-h-screen" dir="rtl">
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-[#d6d6d6]">
-        <div className="container mx-auto px-4 py-4 max-w-[1200px]">
-          <div className="flex flex-wrap items-center gap-2 text-xs md:text-sm text-[#6a7282]">
-            <button onClick={() => navigate('/')} className="hover:text-[#13499d]">الرئيسية</button>
-            <span>/</span>
-            <button onClick={() => navigate('/products')} className="hover:text-[#13499d]">المنتجات</button>
-            <span>/</span>
-            <button onClick={() => navigate(`/products/${category}`)} className="hover:text-[#13499d]">{product.category}</button>
-            <span>/</span>
-            <span className="text-[#303030]">{product.name}</span>
-          </div>
-        </div>
-      </div>
+      
 
       {/* Product Details Section */}
       <div className="container mx-auto px-4 py-6 md:py-12 max-w-[1200px]">
@@ -96,11 +80,11 @@ export function ProductDetailPage() {
             <div className="bg-white rounded-lg p-4 mb-4 border border-[#d6d6d6]">
               <div className="relative h-[400px] overflow-hidden rounded-lg">
                 <img 
-                  src={product.images[selectedImage]} 
-                  alt={product.name} 
+                  src={images[selectedImage]}
+                  alt={product?.title || product?.name || ''}
                   className="w-full h-full object-cover"
                 />
-                {!product.inStock && (
+                {product?.inStock === false && (
                   <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-md text-sm">
                     غير متوفر
                   </div>
@@ -110,10 +94,11 @@ export function ProductDetailPage() {
 
             {/* Thumbnail Images */}
             <div className="grid grid-cols-4 gap-2 md:gap-3">
-              {product.images.map((image, index) => (
+              {images.map((image: any, index: number) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
+                  aria-label={`عرض الصورة ${index + 1}`}
                   className={`bg-white rounded-lg p-1 md:p-2 border-2 transition-all ${
                     selectedImage === index ? 'border-[#13499d]' : 'border-[#d6d6d6] hover:border-[#6a7282]'
                   }`}
@@ -129,18 +114,17 @@ export function ProductDetailPage() {
           {/* Right Side - Details */}
           <div>
             <div className="bg-[#ffc00e] inline-block px-3 py-1 rounded-md mb-3">
-              <span className="text-[#101828] text-xs md:text-sm">{product.category}</span>
+              <span className="text-[#101828] text-xs md:text-sm">{product?.category?.name || product?.category?.slug || ''}</span>
             </div>
-            
-            <h1 className="text-[#303030] text-2xl md:text-4xl mb-2 text-right">{product.name}</h1>
-            <p className="text-[#6a7282] text-base md:text-lg mb-6 text-right">موديل: {product.model}</p>
+
+            <h1 className="text-[#303030] text-2xl md:text-4xl mb-2 text-right">{product?.title || product?.name || ''}</h1>
 
             <div className="bg-white rounded-lg p-6 mb-6 border border-[#d6d6d6]">
               <p className="text-[#4a5565] text-right leading-relaxed mb-4">
-                {product.description}
+                {product?.short_description || product?.description}
               </p>
               <p className="text-[#4a5565] text-right leading-relaxed">
-                {product.fullDescription}
+                {product?.description}
               </p>
             </div>
 
@@ -149,9 +133,9 @@ export function ProductDetailPage() {
               <div className="flex items-center justify-between mb-6">
                 <div className="text-right">
                   <p className="text-[#6a7282] text-sm mb-1">السعر</p>
-                  <p className="text-[#13499d] text-3xl">{product.price}</p>
+                  <p className="text-[#13499d] text-3xl">{product?.price ?? 'السعر عند الطلب'}</p>
                 </div>
-                {product.inStock && (
+                {inStock && (
                   <div className="flex items-center gap-2 bg-green-50 px-3 py-2 rounded-md">
                     <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 20 20">
                       <path d="M16.6667 5L7.50004 14.1667L3.33337 10" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
@@ -161,70 +145,101 @@ export function ProductDetailPage() {
                 )}
               </div>
 
-              {/* Quantity */}
-              <div className="mb-6">
-                <label className="block text-[#303030] mb-2 text-right">الكمية</label>
-                <div className="flex items-center gap-3 justify-end">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-10 h-10 border border-[#d6d6d6] rounded-md hover:bg-gray-50 flex items-center justify-center"
+              {/* Quantity removed per user request */}
+
+              {/* action buttons removed per request */}
+            </div>
+
+            {/* Sales contact with call button */}
+            <div className="bg-white rounded-lg p-6 mb-6 border border-[#d6d6d6]">
+              <div className="flex items-center justify-between gap-4">
+                <div className="text-right">
+                  <p className="text-[#6a7282] text-sm mb-1">المبيعات</p>
+                  <div dir="ltr" className="text-[#0f1629] text-lg font-semibold">091-2100995</div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <a
+                    href="tel:+218912100995"
+                    className="inline-flex items-center gap-2 bg-[#13499d] hover:bg-blue-800 text-white px-4 py-2 rounded-md transition-colors text-sm"
+                    aria-label="Call sales"
                   >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 16 16">
-                      <path d="M3.33337 8H12.6667" stroke="#303030" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333" />
-                    </svg>
-                  </button>
-                  <input
-                    type="number"
-                    value={quantity}
-                    onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                    className="w-20 h-10 border border-[#d6d6d6] rounded-md text-center"
-                    min="1"
-                  />
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="w-10 h-10 border border-[#d6d6d6] rounded-md hover:bg-gray-50 flex items-center justify-center"
-                  >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 16 16">
-                      <path d="M8 3.33333V12.6667" stroke="#303030" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333" />
-                      <path d="M3.33337 8H12.6667" stroke="#303030" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333" />
-                    </svg>
-                  </button>
+                    اتصل بنا
+                  </a>
                 </div>
               </div>
-
-              {/* Buttons */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <button className="bg-[#13499d] hover:bg-blue-800 text-white py-2 md:py-3 rounded-md transition-colors flex items-center justify-center gap-2 text-sm md:text-base">
-                  <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 20 20">
-                    <path d="M6.66667 1.66667V4.16667" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.66667" />
-                    <path d="M13.3333 1.66667V4.16667" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.66667" />
-                    <path d="M2.5 7.5H17.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.66667" />
-                    <path d="M17.5 7.08333V14.1667C17.5 16.6667 16.25 18.3333 13.3333 18.3333H6.66667C3.75 18.3333 2.5 16.6667 2.5 14.1667V7.08333C2.5 4.58333 3.75 2.91667 6.66667 2.91667H13.3333C16.25 2.91667 17.5 4.58333 17.5 7.08333Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.66667" />
-                  </svg>
-                  <span>طلب عرض سعر</span>
-                </button>
-                <button className="bg-white border border-[#13499d] text-[#13499d] hover:bg-blue-50 py-2 md:py-3 rounded-md transition-colors flex items-center justify-center gap-2 text-sm md:text-base">
-                  <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 20 20">
-                    <path d="M6.66667 10H13.3333" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.66667" />
-                    <path d="M10 13.3333V6.66667" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.66667" />
-                    <path d="M7.5 18.3333H12.5C16.6667 18.3333 18.3333 16.6667 18.3333 12.5V7.5C18.3333 3.33333 16.6667 1.66667 12.5 1.66667H7.5C3.33333 1.66667 1.66667 3.33333 1.66667 7.5V12.5C1.66667 16.6667 3.33333 18.3333 7.5 18.3333Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.66667" />
-                  </svg>
-                  <span>استفسار</span>
-                </button>
-              </div>
             </div>
 
-            {/* Warranty Info */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start gap-3" dir="rtl">
-              <svg className="w-6 h-6 text-[#13499d] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24">
-                <path d={svgPaths.p169dda00} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-                <path d={svgPaths.p3cccb600} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-              </svg>
-              <div className="text-right">
-                <p className="text-[#13499d] mb-1">ضمان شامل</p>
-                <p className="text-[#4a5565] text-sm">{product.warranty}</p>
+            {/* Warranty card removed per request */}
+
+            {/* Attachments Row (separate full-width section) */}
+            {((product.attachments && product.attachments.length) || (product.raw && product.raw.attachments && product.raw.attachments.length)) && (
+              <div className="mt-8">
+                <h3 className="text-[#303030] text-2xl mb-4 text-right">المرفقات</h3>
+                <div className="max-w-[1200px] mx-auto">
+                  <div className="flex flex-col md:flex-row gap-6">
+                    <div className="md:w-2/3">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        {(product.attachments && product.attachments.length ? product.attachments : product.raw.attachments || []).map((att: any, i: number) => {
+                    const rawUrl = att.url || att.attributes?.url || att.data?.attributes?.url || att.url || (typeof att === 'string' ? att : undefined);
+                    const url = rawUrl || '';
+                    const filename = att.name || att.title || (url ? url.split('/').pop() : `attachment-${i}`);
+                    const isPdf = typeof url === 'string' && url.toLowerCase().endsWith('.pdf');
+                    return (
+                      <div
+                        key={i}
+                        tabIndex={isPdf ? 0 : undefined}
+                        onKeyDown={(e: any) => { if (isPdf && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); setPreviewUrl(url); } }}
+                        onClick={() => { if (isPdf) setPreviewUrl(url); }}
+                        aria-label={isPdf ? `افتح ${filename} للمعاينة` : `فتح ${filename}`}
+                        className={`border rounded-lg bg-white p-8 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow min-h-[120px] ${isPdf ? 'cursor-pointer' : ''}`}
+                      >
+                        <div className="flex items-center gap-4">
+                            <div className="w-16 h-16 flex items-center justify-center bg-[#f3f4f6] rounded flex-shrink-0">
+                              {isPdf ? (
+                                <svg className="w-6 h-6 text-red-600" viewBox="0 0 24 24" fill="none"><path d="M6 2h7l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                              ) : (
+                                <svg className="w-6 h-6 text-gray-600" viewBox="0 0 24 24" fill="none"><path d="M6 2h12v20H6z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                              )}
+                            </div>
+                            <div className="text-right flex-1 min-w-0 pr-4 md:pr-6">
+                              <div className="text-[#303030] font-medium truncate">{filename}</div>
+                              {att.size && <div className="text-sm text-[#6a7282]">{formatSize(att.size)}</div>}
+                            </div>
+                          </div>
+                        <div className="mt-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
+                          <div className="flex gap-2 w-full sm:w-auto">
+                            <a href={url} target="_blank" rel="noreferrer" className="px-3 py-2 border rounded-md text-sm w-full text-center sm:w-auto">تحميل</a>
+                          </div>
+                          <div className="text-sm text-[#6a7282] mt-2 sm:mt-0">{att.type || (isPdf ? 'PDF' : '')}</div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                      </div>
+                    </div>
+
+                    
+                  </div>
+                </div>
+
+                {/* Centered modal preview */}
+                {previewUrl && (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+                    <div className="bg-white w-full max-w-5xl h-[86vh] rounded-md overflow-hidden relative">
+                      <div className="flex items-center justify-between p-3 border-b">
+                        <div className="text-right text-sm text-[#303030]">معاينة المرفق</div>
+                        <div className="flex items-center gap-2">
+                          <a href={previewUrl} target="_blank" rel="noreferrer" className="px-3 py-1 border rounded-md text-sm">فتح في علامة جديدة</a>
+                          <button aria-label="إغلاق المعاينة" onClick={() => setPreviewUrl(null)} className="px-3 py-1 bg-white border rounded-md">إغلاق</button>
+                        </div>
+                      </div>
+                      <iframe src={previewUrl} className="w-full h-[calc(100%-48px)]" title="attachment-fullscreen"></iframe>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
+            )}
           </div>
         </div>
 
@@ -233,7 +248,7 @@ export function ProductDetailPage() {
           <h2 className="text-[#303030] text-2xl md:text-3xl mb-4 md:mb-6 text-right">المواصفات الفنية</h2>
           <div className="bg-white rounded-lg border border-[#d6d6d6] overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#d6d6d6]">
-              {Object.entries(product.specifications).map(([key, value], index) => (
+              {Object.entries(specifications).map(([key, value], index) => (
                 <div key={index} className="bg-white">
                   <div className="p-4 flex items-center justify-between">
                     <div className="bg-slate-50 px-3 py-1.5 rounded-md">
@@ -252,7 +267,7 @@ export function ProductDetailPage() {
           <h2 className="text-[#303030] text-2xl md:text-3xl mb-4 md:mb-6 text-right">المميزات</h2>
           <div className="bg-white rounded-lg border border-[#d6d6d6] p-4 md:p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              {product.features.map((feature, index) => (
+              {features.length && features.map((feature: any, index: number) => (
                 <div key={index} className="flex items-start gap-3" dir="rtl">
                   <div className="w-6 h-6 bg-[#13499d] rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                     <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 16 16">
@@ -268,27 +283,26 @@ export function ProductDetailPage() {
 
         {/* Related Products */}
         <div className="mt-8 md:mt-12">
-          <h2 className="text-[#303030] text-2xl md:text-3xl mb-4 md:mb-6 text-right">منتجات ذات صلة</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {relatedProducts.map((relatedProduct) => (
-              <button
-                key={relatedProduct.id}
-                onClick={() => navigate(`/products/${category}/${relatedProduct.id}`)}
-                className="bg-white border border-[#d6d6d6] rounded-lg overflow-hidden hover:shadow-lg transition-shadow text-right"
-              >
-                <div className="relative h-48 overflow-hidden">
-                  <img src={relatedProduct.image} alt={relatedProduct.name} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-[rgba(15,22,41,0.4)]"></div>
-                </div>
-                <div className="p-4">
-                  <h3 className="text-[#303030] text-lg mb-1 text-right">{relatedProduct.name}</h3>
-                  <p className="text-[#6a7282] text-sm mb-2 text-right">{relatedProduct.model}</p>
-                  <div className="bg-slate-50 px-3 py-1.5 rounded-md inline-block">
-                    <span className="text-blue-900 text-xs">{relatedProduct.capacity}</span>
+              {(product && Array.isArray(product.raw?.related_products) ? product.raw.related_products : product?.raw?.relatedProducts || []).map((rp: any, i: number) => (
+                <button
+                  key={rp.id || i}
+                  onClick={() => navigate(`/products/${product?.category?.slug || product?.category?.id || ''}/${rp.id || rp.slug || ''}`)}
+                  className="bg-white border border-[#d6d6d6] rounded-lg overflow-hidden hover:shadow-lg transition-shadow text-right"
+                >
+                  <div className="relative h-48 overflow-hidden">
+                    <img src={strapiImageUrl(rp.image || rp.attributes?.image || rp.url || rp.attributes?.url) || imgImageWithFallback3} alt={rp.title || rp.name} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-[rgba(15,22,41,0.4)]"></div>
                   </div>
-                </div>
-              </button>
-            ))}
+                  <div className="p-4">
+                    <h3 className="text-[#303030] text-lg mb-1 text-right">{rp.title || rp.name}</h3>
+                    <p className="text-[#6a7282] text-sm mb-2 text-right">{rp.model || rp.short_description || ''}</p>
+                    <div className="bg-slate-50 px-3 py-1.5 rounded-md inline-block">
+                      <span className="text-blue-900 text-xs">{rp.capacity || rp.category || ''}</span>
+                    </div>
+                  </div>
+                </button>
+              ))}
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useSolutions } from '../../hooks/useMedia';
 import svgPaths from "../../imports/svg-gxhmc93rq1";
 import imgContainer from "figma:asset/ce09801d9985dc6358d6660a48fed0431ef797ae.png";
 import { AviationPage } from './sectors/AviationPage';
@@ -116,7 +117,10 @@ function SectorCard({
   challenges, 
   solutions,
   onViewDetails,
-  index
+  index,
+  eyebrow,
+  heroImage,
+  topBorderColor,
 }: {
   icon: React.ComponentType<any>;
   title: string;
@@ -125,34 +129,51 @@ function SectorCard({
   solutions: string[];
   onViewDetails: () => void;
   index: number;
+  eyebrow?: string;
+  heroImage?: string;
+  topBorderColor?: string;
 }) {
+  const baseClasses = "bg-white rounded-xl border border-slate-200 p-6 flex flex-col gap-6 h-full cursor-pointer";
+  const extraClasses = topBorderColor ? " border-t-4" : "";
+  const style: React.CSSProperties = topBorderColor ? { borderTopColor: topBorderColor } : {};
+
   return (
     <motion.div 
-      className="bg-white rounded-xl border border-slate-200 p-6 flex flex-col gap-6 h-full"
+      className={baseClasses + extraClasses}
+      style={style}
       initial={{ opacity: 0, y: 30, scale: 0.95 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.15)" }}
+      onClick={() => onViewDetails()}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onViewDetails();
+        }
+      }}
     >
       
       {/* Card Header */}
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-4 justify-end">
-          <motion.div 
-            className="bg-[#f6f6f6] rounded-full w-12 h-12 flex items-center justify-center border border-[#303030] flex-shrink-0"
-            whileHover={{ rotate: 360, scale: 1.1 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="w-6 h-6 text-[#303030]">
-              <Icon />
+          {heroImage ? (
+            <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-[#303030]">
+              <img src={heroImage} alt={title} className="w-full h-full object-cover" />
             </div>
-          </motion.div>
-          <h3 className="text-xl text-[#303030] text-right flex-1" dir="auto">
-            {title}
-          </h3>
+          ) : (
+            <div className="w-12 h-12 flex-shrink-0" />
+          )}
+
+          <div className="flex-1 text-right">
+            <h3 className="text-xl text-[#303030]" dir="auto">{title}</h3>
+            {eyebrow && <div className="text-sm text-[#13499d] mt-1">{eyebrow}</div>}
+          </div>
         </div>
-        <p className="text-[#4a5565] text-right" dir="auto">
+        <p className="text-[#4a5565] text-right mt-2" dir="auto">
           {description}
         </p>
       </div>
@@ -167,22 +188,10 @@ function SectorCard({
           </h4>
           <ul className="flex flex-col gap-2">
             {challenges.map((challenge, idx) => (
-              <motion.li 
-                key={idx} 
-                className="flex items-start gap-2 text-sm text-[#4a5565] text-right" 
-                dir="auto"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.05 }}
-              >
-                <motion.div 
-                  className="bg-[#fb2c36] rounded-full w-1.5 h-1.5 mt-2 flex-shrink-0"
-                  animate={{ scale: [1, 1.3, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: idx * 0.2 }}
-                />
+              <li key={idx} className="flex items-start gap-2 text-sm text-[#4a5565] text-right" dir="auto">
+                <span className="bg-[#fb2c36] rounded-full w-1.5 h-1.5 mt-2 flex-shrink-0 inline-block" />
                 <span className="flex-1">{challenge}</span>
-              </motion.li>
+              </li>
             ))}
           </ul>
         </div>
@@ -194,24 +203,12 @@ function SectorCard({
           </h4>
           <ul className="flex flex-col gap-2">
             {solutions.map((solution, idx) => (
-              <motion.li 
-                key={idx} 
-                className="flex items-start gap-2 text-sm text-[#4a5565] text-right" 
-                dir="auto"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.05 }}
-              >
-                <motion.div 
-                  className="w-4 h-4 text-[#00C950] flex-shrink-0 mt-0.5"
-                  whileHover={{ scale: 1.3, rotate: 360 }}
-                  transition={{ duration: 0.3 }}
-                >
+              <li key={idx} className="flex items-start gap-2 text-sm text-[#4a5565] text-right" dir="auto">
+                <span className="w-4 h-4 text-[#00C950] flex-shrink-0 mt-0.5 inline-block">
                   <CheckIcon />
-                </motion.div>
+                </span>
                 <span className="flex-1">{solution}</span>
-              </motion.li>
+              </li>
             ))}
           </ul>
         </div>
@@ -240,6 +237,8 @@ function SectorCard({
 export function SolutionsPage() {
   const navigate = useNavigate();
   const [selectedSector, setSelectedSector] = useState<string | null>(null);
+  const { data: solutionsData, isLoading: solutionsLoading, isError: solutionsError } = useSolutions();
+  const solutions = Array.isArray(solutionsData) ? solutionsData : [];
 
   const sectors = [
     {
@@ -391,22 +390,51 @@ export function SolutionsPage() {
       </div>
 
       {/* Sectors Grid */}
-      <div className="container mx-auto px-4 py-12 md:py-16 max-w-[1200px]">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {sectors.map((sector, index) => (
-            <SectorCard
-              key={sector.id}
-              icon={sector.icon}
-              title={sector.title}
-              description={sector.description}
-              challenges={sector.challenges}
-              solutions={sector.solutions}
-              onViewDetails={() => setSelectedSector(sector.id)}
-              index={index}
-            />
-          ))}
+      {/* Live Solutions from Strapi */}
+      <div className="container mx-auto px-4 py-8 md:py-12 max-w-[1200px]">
+        <h2 className="text-2xl mb-6 text-right">حلولنا</h2>
+        {solutionsLoading && <div className="text-right">جارٍ تحميل الحلول...</div>}
+        {solutionsError && <div className="text-red-600 text-right">خطأ عند جلب الحلول</div>}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {!solutionsLoading && solutions.map((s: any, idx: number) => {
+            // choose an icon based on slug/title keywords
+            const slug = (s.slug || '').toLowerCase();
+            const rawTitle = (s.title || (s.hero && s.hero.title) || s.slug || 'حل');
+            const title = String(rawTitle).toLowerCase();
+            const getIcon = () => {
+              if (slug.includes('air') || slug.includes('aviat') || title.includes('طيران') || title.includes('مطار')) return PlaneIcon;
+              if (slug.includes('log') || title.includes('لوج') || title.includes('شحن')) return ShipIcon;
+              if (slug.includes('oil') || title.includes('نفط') || title.includes('gas')) return FuelIcon;
+              if (slug.includes('construct') || title.includes('بناء') || title.includes('تشييد')) return HardHatIcon;
+              if (slug.includes('manufact') || title.includes('مصنع') || title.includes('تصنيع')) return FactoryIcon;
+              if (slug.includes('retail') || title.includes('متاجر') || title.includes('تجاري')) return ShoppingCartIcon;
+              return PlaneIcon;
+            };
+
+            const IconComponent = getIcon();
+
+            const displayTitle = s.title || (s.hero && s.hero.title) || s.slug || 'حل';
+            const isAviation = IconComponent === PlaneIcon || title.includes('طيران') || title.includes('مطار') || slug.includes('air') || slug.includes('aviat');
+
+            return (
+              <SectorCard
+                key={s.id || idx}
+                icon={IconComponent}
+                title={displayTitle}
+                eyebrow={(s.hero && s.hero.eyebrow) ? s.hero.eyebrow : undefined}
+                heroImage={s.heroImage || s.image || undefined}
+                description={(s.hero && s.hero.subtitle) ? s.hero.subtitle : (s.excerpt || '')}
+                challenges={Array.isArray(s.challenges) ? s.challenges : []}
+                solutions={Array.isArray(s.specializedSolutions) ? s.specializedSolutions : []}
+                index={idx}
+                onViewDetails={() => navigate(`/solutions/${s.slug || s.id}`)}
+                topBorderColor={isAviation ? '#ffc00e' : undefined}
+              />
+            );
+          })}
         </div>
       </div>
+      {/* Static sectors grid removed — use dynamic `solutions` from the API above or sector pages */}
 
       {/* How We Work Section */}
       <div className="container mx-auto px-4 py-12 md:py-16 max-w-[1200px]">
@@ -492,7 +520,11 @@ export function SolutionsPage() {
             <p className="text-lg md:text-xl text-[#303030] mb-6 md:mb-8" dir="auto">
               تواصل معنا اليوم للحصول على استشارة مجانية وعرض أسعار مخصص لاحتياجاتك
             </p>
-            <motion.button 
+            <motion.a
+              href="https://wa.me/218911286734"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="فتح محادثة واتساب"
               className="bg-white border border-[#13499d] text-[#13499d] hover:bg-[#13499d] hover:text-white transition-colors px-8 py-3 rounded-md inline-flex items-center gap-2"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -501,7 +533,7 @@ export function SolutionsPage() {
                 <PhoneIcon />
               </div>
               <span dir="auto">اتصل بنا الآن</span>
-            </motion.button>
+            </motion.a>
           </motion.div>
         </div>
       </motion.div>

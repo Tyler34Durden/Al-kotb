@@ -302,8 +302,32 @@ function Text() {
 function ListItem() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon1 />
-      <Text />
+      <div className="flex items-start gap-3 justify-end w-full" style={{ opacity: 1, transform: 'none' }}>
+        <span className="text-[#4a5565] text-sm md:text-base">قطع غيار أصلية 100%</span>
+        <div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
+    </div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
@@ -339,8 +363,20 @@ function Text1() {
 function ListItem1() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon2 />
-      <Text1 />
+      <div className="flex items-start gap-3 justify-end w-full" style={{ opacity: 1, transform: 'none' }}>
+        <span className="text-[#4a5565] text-sm md:text-base">تركيب بأيدي فنيين مختصين</span>
+        <div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
@@ -376,8 +412,32 @@ function Text2() {
 function ListItem2() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon3 />
-      <Text2 />
+      <div className="flex items-start gap-3 justify-end w-full" style={{ opacity: 1, transform: 'none' }}>
+        <span className="text-[#4a5565] text-sm md:text-base">مخزون دائم ومتجدد</span>
+        <div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
+    </div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
@@ -413,8 +473,32 @@ function Text3() {
 function ListItem3() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon4 />
-      <Text3 />
+      <div className="flex items-start gap-3 justify-end w-full" style={{ opacity: 1, transform: 'none' }}>
+        <span className="text-[#4a5565] text-sm md:text-base">توصيل سريع لجميع المدن</span>
+        <div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
+    </div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
@@ -450,8 +534,32 @@ function Text4() {
 function ListItem4() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon5 />
-      <Text4 />
+      <div className="flex items-start gap-3 justify-end w-full" style={{ opacity: 1, transform: 'none' }}>
+        <span className="text-[#4a5565] text-sm md:text-base">ضمان شامل على القطع</span>
+        <div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
+    </div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
@@ -618,8 +726,20 @@ function Text5() {
 function ListItem5() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon8 />
-      <Text5 />
+      <div className="flex items-start gap-3 justify-end w-full" style={{ opacity: 1, transform: 'none' }}>
+        <span className="text-[#4a5565] text-sm md:text-base">أسعار تنافسية</span>
+        <div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
@@ -655,8 +775,20 @@ function Text6() {
 function ListItem6() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon9 />
-      <Text6 />
+      <div className="flex items-start gap-3 justify-end w-full" style={{ opacity: 1, transform: 'none' }}>
+        <span className="text-[#4a5565] text-sm md:text-base">تصميم تخطيط المستودعات</span>
+        <div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
@@ -692,8 +824,20 @@ function Text7() {
 function ListItem7() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon10 />
-      <Text7 />
+      <div className="flex items-start gap-3 justify-end w-full" style={{ opacity: 1, transform: 'none' }}>
+        <span className="text-[#4a5565] text-sm md:text-base">تحسين مسارات الحركة</span>
+        <div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
@@ -729,8 +873,20 @@ function Text8() {
 function ListItem8() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon11 />
-      <Text8 />
+      <div className="flex items-start gap-3 justify-end w-full" style={{ opacity: 1, transform: 'none' }}>
+        <span className="text-[#4a5565] text-sm md:text-base">حساب أحمال الرفوف</span>
+        <div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
@@ -766,8 +922,20 @@ function Text9() {
 function ListItem9() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon12 />
-      <Text9 />
+      <div className="flex items-start gap-3 justify-end w-full" style={{ opacity: 1, transform: 'none' }}>
+        <span className="text-[#4a5565] text-sm md:text-base">دراسات الجدوى</span>
+        <div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
@@ -933,8 +1101,20 @@ function Text10() {
 function ListItem10() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon15 />
-      <Text10 />
+      <div className="flex items-start gap-3 justify-end w-full" style={{ opacity: 1, transform: 'none' }}>
+        <span className="text-[#4a5565] text-sm md:text-base">صيانة دورية مجدولة</span>
+        <div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
@@ -970,8 +1150,20 @@ function Text11() {
 function ListItem11() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon16 />
-      <Text11 />
+      <div className="flex items-start gap-3 justify-end w-full" style={{ opacity: 1, transform: 'none' }}>
+        <span className="text-[#4a5565] text-sm md:text-base">استجابة سريعة للطوارئ</span>
+        <div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
@@ -1007,8 +1199,20 @@ function Text12() {
 function ListItem12() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon17 />
-      <Text12 />
+      <div className="flex items-start gap-3 justify-end w-full" style={{ opacity: 1, transform: 'none' }}>
+        <span className="text-[#4a5565] text-sm md:text-base">فريق فني متاح 24/7</span>
+        <div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
@@ -1044,8 +1248,20 @@ function Text13() {
 function ListItem13() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon18 />
-      <Text13 />
+      <div className="flex items-start gap-3 justify-end w-full" style={{ opacity: 1, transform: 'none' }}>
+        <span className="text-[#4a5565] text-sm md:text-base">تقارير صيانة مفصلة</span>
+        <div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
@@ -1081,8 +1297,20 @@ function Text14() {
 function ListItem14() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon19 />
-      <Text14 />
+      <div className="flex items-start gap-3 justify-end w-full" style={{ opacity: 1, transform: 'none' }}>
+        <span className="text-[#4a5565] text-sm md:text-base">ضمان على جميع الأعمال</span>
+        <div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
@@ -1251,8 +1479,8 @@ function Text15() {
 function ListItem15() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon22 />
       <Text15 />
+      <Icon22 />
     </div>
   );
 }
@@ -1288,8 +1516,8 @@ function Text16() {
 function ListItem16() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon23 />
       <Text16 />
+      <Icon23 />
     </div>
   );
 }
@@ -1325,8 +1553,8 @@ function Text17() {
 function ListItem17() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon24 />
       <Text17 />
+      <Icon24 />
     </div>
   );
 }
@@ -1362,8 +1590,8 @@ function Text18() {
 function ListItem18() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon25 />
       <Text18 />
+      <Icon25 />
     </div>
   );
 }
@@ -1399,8 +1627,8 @@ function Text19() {
 function ListItem19() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
-      <Icon26 />
       <Text19 />
+      <Icon26 />
     </div>
   );
 }
@@ -1673,13 +1901,20 @@ function Icon31() {
 
 function Button13() {
   return (
-    <div className="bg-[#f6f6f6] h-[40px] relative rounded-[6px] shrink-0 w-[188px]" data-name="Button">
+    <a
+      href="https://wa.me/218911286734"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="فتح محادثة واتساب"
+      className="bg-[#f6f6f6] h-[40px] relative rounded-[6px] shrink-0 w-[188px] inline-flex items-center justify-center"
+      data-name="Button"
+    >
       <div aria-hidden="true" className="absolute border border-[#fb2c36] border-solid inset-0 pointer-events-none rounded-[6px]" />
       <Icon31 />
-      <p className="absolute font-['Cairo:SemiBold',sans-serif] font-semibold leading-[20px] left-[calc(50%-39px)] not-italic text-[#fb2c36] text-[16px] text-nowrap top-[9.8px] whitespace-pre" dir="auto">
+      <span className="font-['Cairo:SemiBold',sans-serif] font-semibold leading-[20px] not-italic text-[#fb2c36] text-[16px] whitespace-pre" dir="auto">
         اتصل بنا الآن
-      </p>
-    </div>
+      </span>
+    </a>
   );
 }
 
@@ -1780,7 +2015,7 @@ function Footer2() {
   return (
     <div className="h-[28px] relative shrink-0 w-[141.9px]" data-name="Footer">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid box-border h-[28px] relative w-[141.9px]">
-        <p className="absolute font-['Cairo:Bold',sans-serif] font-bold leading-[28px] left-[142px] not-italic text-[18px] text-blue-50 text-right top-[-0.2px] translate-x-[-100%] w-[142px]">+218 21 123 4567</p>
+        <p dir="ltr" className="absolute font-['Cairo:Bold',sans-serif] font-bold leading-[28px] left-[142px] not-italic text-[18px] text-blue-50 text-right top-[-0.2px] translate-x-[-100%] w-[142px]">+218 91 128 6734</p>
       </div>
     </div>
   );
@@ -1812,7 +2047,7 @@ function Footer3() {
   return (
     <div className="h-[28px] relative shrink-0 w-[115.725px]" data-name="Footer">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid box-border h-[28px] relative w-[115.725px]">
-        <p className="absolute font-['Cairo:Bold',sans-serif] font-bold leading-[28px] left-[116px] not-italic text-[18px] text-blue-50 text-nowrap text-right top-[-0.2px] translate-x-[-100%] whitespace-pre">info@alqotb.ly</p>
+        <p dir="ltr" className="absolute font-['Cairo:Bold',sans-serif] font-bold leading-[28px] left-[116px] not-italic text-[18px] text-blue-50 text-nowrap text-right top-[-0.2px] translate-x-[-100%] whitespace-pre">Alkotobcompany@gmail.com</p>
       </div>
     </div>
   );
@@ -1909,10 +2144,22 @@ function Footer7() {
 
 function ListItem20() {
   return (
-    <div className="h-[28px] relative shrink-0 w-full" data-name="List Item">
-      <Footer7 />
+    <div className="h-[24px] relative shrink-0 w-full" data-name="List Item">
+      <div className="flex items-start gap-3 justify-end w-full" style={{ opacity: 1, transform: 'none' }}>
+        <span className="text-[#4a5565] text-sm md:text-base">تدريب الموظفين</span>
+        <div>
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 20 20">
+            <g clipPath="url(#clip0_122_835)">
+              <path d="M18.1675 8.33332C18.5481 10.2011 18.2768 12.1428 17.399 13.8348C16.5212 15.5268 15.0899 16.8667 13.3437 17.6311C11.5976 18.3955 9.64217 18.5381 7.80356 18.0353C5.96496 17.5325 4.35431 16.4145 3.24021 14.8678C2.12612 13.3212 1.57592 11.4394 1.68137 9.53615C1.78682 7.63294 2.54155 5.8234 3.81969 4.4093C5.09783 2.9952 6.82213 2.06202 8.70504 1.76537C10.5879 1.46872 12.5156 1.82654 14.1666 2.77916" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+              <path d="M7.5 9.16667L10 11.6667L18.3333 3.33333" stroke="#00C950" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.66667"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_122_835"><rect fill="white" height="20" width="20"></rect></clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
     </div>
-  );
 }
 
 function Text21() {

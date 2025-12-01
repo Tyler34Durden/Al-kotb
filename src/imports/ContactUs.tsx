@@ -217,7 +217,11 @@ function Heading2() {
 function Paragraph1() {
   return (
     <div className="h-[28px] relative shrink-0 w-full" data-name="Paragraph">
-      <p className="absolute font-['Cairo:Regular',sans-serif] font-normal leading-[28px] left-[496.16px] not-italic text-[#4a5565] text-[20px] text-center text-nowrap top-[0.2px] translate-x-[-50%] whitespace-pre" dir="auto">
+      <p className="absolute font-['Cairo:Medium',sans-serif] font-medium leading-[24px] left-[90.45px] not-italic text-[#0f1629] text-[16px] text-center top-[-0.2px] translate-x-[-50%] whitespace-pre" dir="auto">
+        <span>المبيعات</span>
+        <span dir="ltr">&nbsp;</span>
+        <a dir="ltr" href="tel:+218912100995" className="not-italic text-[#0f1629]">091-2100995</a>
+      </p>
         اختر الطريقة التي تناسبك للتواصل معنا
       </p>
     </div>
@@ -290,7 +294,7 @@ function ContactPage2() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="ContactPage">
       <p className="absolute font-['Cairo:Medium',sans-serif] font-medium leading-[24px] left-[90.33px] not-italic text-[#0f1629] text-[16px] text-center text-nowrap top-[-0.2px] translate-x-[-50%] whitespace-pre" dir="auto">
-        طرابلس، شارع الجمهورية
+        طرابلس قصر بن غشير وادي الربيع
       </p>
     </div>
   );
@@ -382,7 +386,7 @@ function CardHeader1() {
 function ContactPage6() {
   return (
     <div className="absolute h-[24px] left-[24px] top-0 w-[180.4px]" data-name="ContactPage">
-      <p className="absolute font-['Cairo:Medium',sans-serif] font-medium leading-[24px] left-[90.25px] not-italic text-[#0f1629] text-[16px] text-center top-[-0.2px] translate-x-[-50%] w-[127px]">+218 91 234 5678</p>
+      <p dir="ltr" className="absolute font-['Cairo:Medium',sans-serif] font-medium leading-[24px] left-[90.25px] not-italic text-[#0f1629] text-[16px] text-center top-[-0.2px] translate-x-[-50%] w-[127px]">+218 91 128 6734</p>
     </div>
   );
 }
@@ -498,7 +502,7 @@ function CardHeader2() {
 function Paragraph2() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="Paragraph">
-      <p className="absolute font-['Cairo:Medium',sans-serif] font-medium leading-[24px] left-[90.44px] not-italic text-[#0f1629] text-[16px] text-center text-nowrap top-[-0.2px] translate-x-[-50%] whitespace-pre">info@alqotb.ly</p>
+      <p dir="ltr" className="absolute font-['Cairo:Medium',sans-serif] font-medium leading-[24px] left-[90.44px] not-italic text-[#0f1629] text-[16px] text-center text-nowrap top-[-0.2px] translate-x-[-50%] whitespace-pre">Alkotobcompany@gmail.com</p>
     </div>
   );
 }
@@ -606,7 +610,7 @@ function CardHeader3() {
 function Paragraph4() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="Paragraph">
-      <p className="absolute font-['Cairo:Medium',sans-serif] font-medium leading-[24px] left-[90.25px] not-italic text-[#0f1629] text-[16px] text-center top-[-0.2px] translate-x-[-50%] w-[127px]">+218 21 123 4567</p>
+      <p dir="ltr" className="absolute font-['Cairo:Medium',sans-serif] font-medium leading-[24px] left-[90.25px] not-italic text-[#0f1629] text-[16px] text-center top-[-0.2px] translate-x-[-50%] w-[127px]">+218 91 128 6734</p>
     </div>
   );
 }
@@ -614,7 +618,7 @@ function Paragraph4() {
 function Paragraph5() {
   return (
     <div className="h-[24px] relative shrink-0 w-full" data-name="Paragraph">
-      <p className="absolute font-['Cairo:Medium',sans-serif] font-medium leading-[24px] left-[90.25px] not-italic text-[#0f1629] text-[16px] text-center top-[-0.2px] translate-x-[-50%] w-[127px]">+218 91 234 5678</p>
+      <p dir="ltr" className="absolute font-['Cairo:Medium',sans-serif] font-medium leading-[24px] left-[90.25px] not-italic text-[#0f1629] text-[16px] text-center top-[-0.2px] translate-x-[-50%] w-[127px]">+218 91 128 6734</p>
     </div>
   );
 }
@@ -790,7 +794,7 @@ function Input() {
     <div className="bg-white h-[36px] relative rounded-[6px] shrink-0 w-full" data-name="Input">
       <div className="flex flex-row items-center justify-end overflow-clip rounded-[inherit] size-full">
         <div className="box-border content-stretch flex h-[36px] items-center justify-end px-[12px] py-[4px] relative w-full">
-          <p className="font-['Cairo:Regular',sans-serif] font-normal leading-[normal] not-italic relative shrink-0 text-[#7f7f7f] text-[14px] text-nowrap whitespace-pre">+218 91 234 5678</p>
+          <p dir="ltr" className="font-['Cairo:Regular',sans-serif] font-normal leading-[normal] not-italic relative shrink-0 text-[#7f7f7f] text-[14px] text-nowrap whitespace-pre">+218 91 128 6734</p>
         </div>
       </div>
       <div aria-hidden="true" className="absolute border-[#d6d6d6] border-[0.8px] border-solid inset-0 pointer-events-none rounded-[6px]" />
@@ -1093,12 +1097,18 @@ function Icon9() {
 
 function Button11() {
   return (
-    <div className="bg-[#13499d] h-[40px] relative rounded-[6px] shrink-0 w-full" data-name="Button">
+    <a
+      href="https://wa.me/218911286734"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="bg-[#13499d] h-[40px] relative rounded-[6px] shrink-0 w-full inline-flex items-center justify-center"
+      data-name="Button"
+    >
       <Icon9 />
-      <p className="absolute font-['Cairo:Medium',sans-serif] font-medium leading-[20px] left-[181.89px] not-italic text-[14px] text-nowrap text-white top-[9.8px] whitespace-pre" dir="auto">
+      <p className="font-['Cairo:Medium',sans-serif] font-medium leading-[20px] not-italic text-[14px] text-nowrap text-white whitespace-pre" dir="auto">
         إرسال الرسالة
       </p>
-    </div>
+    </a>
   );
 }
 
@@ -1290,7 +1300,7 @@ function Footer3() {
   return (
     <div className="h-[28px] relative shrink-0 w-[115.725px]" data-name="Footer">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid box-border h-[28px] relative w-[115.725px]">
-        <p className="absolute font-['Cairo:Bold',sans-serif] font-bold leading-[28px] left-[116px] not-italic text-[18px] text-blue-50 text-nowrap text-right top-[-0.2px] translate-x-[-100%] whitespace-pre">info@alqotb.ly</p>
+        <p dir="ltr" className="absolute font-['Cairo:Bold',sans-serif] font-bold leading-[28px] left-[116px] not-italic text-[18px] text-blue-50 text-nowrap text-right top-[-0.2px] translate-x-[-100%] whitespace-pre">Alkotobcompany@gmail.com</p>
       </div>
     </div>
   );

@@ -12,33 +12,88 @@ import imgCard8 from "figma:asset/b5bb34718aba6367ba7ca5a373d6eb5079d51e19.png";
 import imgNewsImage1 from "figma:asset/fe961dfa1eae5391f7dc8957c77aee6811709f2e.png";
 import imgNewsImage2 from "figma:asset/a16eb36c62541600ea9a6df9875cf4d8f39b3358.png";
 import imgNewsImage3 from "figma:asset/d1b85c5576554625982a48b25a3caf306992dca1.png";
+import { useNews, useMediaFiles } from '../../hooks/useMedia';
+import { strapiImageUrl } from '../../lib/strapi';
 
 export function MediaPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('catalogues');
-  const [searchTerm, setSearchTerm] = useState('');
 
-  const catalogues = [
-    { id: 1, title: 'كتالوج الرافعات الشوكية 2024', category: 'معدات المناولة', image: imgCard3, pages: 48 },
-    { id: 2, title: 'دليل أنظمة التخزين', category: 'التخزين', image: imgCard4, pages: 32 },
-    { id: 3, title: 'معدات الورش الصناعية', category: 'الورش', image: imgCard5, pages: 24 },
-    { id: 4, title: 'حلول اللوجستيات', category: 'اللوجستيات', image: imgCard6, pages: 36 },
-    { id: 5, title: 'معدات السلامة', category: 'السلامة', image: imgCard7, pages: 20 },
-    { id: 6, title: 'قطع الغيار الأصلية', category: 'قطع الغيار', image: imgCard8, pages: 56 }
-  ];
+  // We'll primarily use media files from `useMediaFiles` and filter them for display.
 
-  const news = [
+  const { data: newsData, error: newsError } = useNews();
+  const fallbackNews = [
     { id: 1, title: 'إطلاق خط إنتاج جديد من الرافعات الكهربائية', date: '15 أكتوبر 2024', image: imgNewsImage1, excerpt: 'نعلن عن إطلاق سلسلة جديدة من الرافعات الشوكية الكهربائية الصديقة للبيئة' },
     { id: 2, title: 'توقيع شراكة استراتيجية مع Toyota', date: '8 سبتمبر 2024', image: imgNewsImage2, excerpt: 'شراكة جديدة لتوفير أحدث التقنيات في معدات المناولة' },
     { id: 3, title: 'افتتاح مركز خدمة جديد في بنغازي', date: '22 أغسطس 2024', image: imgNewsImage3, excerpt: 'توسيع نطاق خدماتنا لتغطية أفضل في شرق ليبيا' }
   ];
+  // Deduplicate news items: prefer slug, then documentId, image.documentId, id, then title+date
+  const news = Array.isArray(newsData) && newsData.length ? (() => {
+    const seen = new Set<string>();
+    return newsData.filter((n: any) => {
+      const slug = n.slug || n.attributes?.slug || (n.raw && n.raw.slug);
+      const documentId = n.documentId || n.attributes?.documentId || (n.raw && n.raw.documentId);
+      const imageDocumentId = n.image && (n.image.documentId || n.image.data?.documentId || n.image.attributes?.documentId);
+      const id = n.id ?? (n.attributes && n.attributes.id) ?? (n.raw && n.raw.id);
+      const key = slug || documentId || imageDocumentId || id || ((n.title || '') + '|' + (n.date || ''));
+      const keyStr = String(key);
+      if (seen.has(keyStr)) return false;
+      seen.add(keyStr);
+      return true;
+    });
+  })() : fallbackNews;
 
   const tabs = [
     { key: 'catalogues', label: 'الكتالوجات' },
-    { key: 'manuals', label: 'الأدلة' },
     { key: 'images', label: 'الصور' },
     { key: 'news', label: 'الأخبار' }
   ];
+
+  // Strapi media files (used for both الكتالوجات and الصور tabs)
+  const { data: mediaFilesData, isLoading: mediaLoading, isError: mediaError } = useMediaFiles();
+  const mediaFiles = Array.isArray(mediaFilesData) ? mediaFilesData : [];
+
+  // PDFs for the Catalogues tab: detect by mime or filename extension
+  const pdfFiles = mediaFiles.filter((m: any) => {
+    const mime: string = (m.mime || m.mimeType || '').toLowerCase();
+    const name: string = (m.name || m.alternativeText || '').toLowerCase();
+    const ext: string = (m.ext || '').toLowerCase();
+    return mime.includes('pdf') || name.endsWith('.pdf') || ext === '.pdf';
+  }).map((m: any) => ({ id: m.id, title: m.name || m.alternativeText || 'كتالوج', url: strapiImageUrl(m), raw: m }));
+
+  // Image files for the Images tab
+  const imageFiles = mediaFiles.filter((m: any) => {
+    const mime: string = (m.mime || m.mimeType || '').toLowerCase();
+    return mime.startsWith('image/');
+  }).map((m: any) => ({ id: m.id, url: strapiImageUrl(m), name: m.name || m.alternativeText || '' }));
+
+  // Dedupe images by filename (keep first occurrence). If name is empty, fall back to id.
+  const dedupedImageFiles = (() => {
+    const seen = new Set<string>();
+    const out: any[] = [];
+    for (const img of imageFiles) {
+      const rawName = (img.name || '').toString();
+      const key = rawName.trim().toLowerCase();
+      if (key) {
+        if (seen.has(key)) continue;
+        seen.add(key);
+        out.push(img);
+      } else {
+        // no reliable name, use id to ensure uniqueness
+        out.push(img);
+      }
+    }
+    return out;
+  })();
+
+  const getImageSrc = (img: any, fallback: any) => {
+    if (!img) return fallback;
+    if (typeof img === 'string') return img;
+    const url = strapiImageUrl(img);
+    if (url) return url;
+    if (img?.url) return strapiImageUrl(img.url);
+    return fallback;
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -88,35 +143,7 @@ export function MediaPage() {
             مركز شامل للكتالوجات والأدلة والشهادات والأخبار التقنية
           </motion.p>
           
-          {/* Search Box */}
-          <motion.div 
-            className="relative w-full md:w-[448px]"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-md h-10 md:h-[36px] flex items-center px-3">
-              <div className="absolute left-3">
-                <motion.svg 
-                  className="w-5 h-5" 
-                  fill="none" 
-                  viewBox="0 0 20 20"
-                  animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-                >
-                  <path d="M17.5 17.5L13.8834 13.8834" stroke="#99A1AF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.66667" />
-                  <path d={svgPaths.pcddfd00} stroke="#99A1AF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.66667" />
-                </motion.svg>
-              </div>
-              <input 
-                type="text" 
-                placeholder="البحث في الموارد..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-transparent border-0 outline-none text-white placeholder:text-[#bedbff] text-sm md:text-base w-full pr-2 pl-10"
-              />
-            </div>
-          </motion.div>
+          {/* Search removed from media page per request */}
         </div>
       </div>
 
@@ -162,38 +189,33 @@ export function MediaPage() {
               exit={{ opacity: 0 }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
             >
-              {catalogues.map((catalogue, index) => (
+              {pdfFiles.length === 0 && !mediaLoading && (
+                <div className="col-span-full text-center py-12">لا توجد كتالوجات PDF لعرضها حالياً.</div>
+              )}
+
+              {pdfFiles.map((file, index) => (
                 <motion.div
-                  key={catalogue.id}
+                  key={file.id}
                   variants={itemVariants}
                   className="bg-white rounded-xl overflow-hidden border border-[#d6d6d6] group cursor-pointer"
                   whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.15)" }}
                 >
-                  <div className="relative h-48 md:h-56 overflow-hidden">
-                    <motion.img
-                      src={catalogue.image}
-                      alt={catalogue.title}
-                      className="w-full h-full object-cover"
-                      whileHover={{ scale: 1.1 }}
-                      transition={{ duration: 0.6 }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <motion.div 
-                      className="absolute bottom-4 right-4 bg-amber-500 text-white px-3 py-1 rounded-full text-sm"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.3 + index * 0.1, type: "spring" }}
-                    >
-                      {catalogue.pages} صفحة
-                    </motion.div>
+                  <div className="relative h-48 md:h-56 overflow-hidden flex items-center justify-center bg-gray-50">
+                    {/* PDFs may not have a useful image; show a simple PDF badge or a fallback image */}
+                    <div className="text-center">
+                      <div className="text-sm text-[#13499d] mb-2">PDF</div>
+                      <h3 className="text-lg text-[#303030] mb-4 text-right group-hover:text-[#13499d] transition-colors">{file.title}</h3>
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
                   </div>
-                  
+
                   <div className="p-4 md:p-6">
-                    <div className="text-xs text-[#13499d] mb-2">{catalogue.category}</div>
+                    <div className="text-xs text-[#13499d] mb-2">كتالوج</div>
                     <h3 className="text-lg text-[#303030] mb-4 text-right group-hover:text-[#13499d] transition-colors">
-                      {catalogue.title}
+                      {file.title}
                     </h3>
                     <motion.button 
+                      onClick={() => window.open(file.url, '_blank')}
                       className="w-full bg-[#13499d] text-white py-2 rounded-md text-sm hover:bg-blue-800 transition-colors text-center"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
@@ -226,7 +248,7 @@ export function MediaPage() {
                   <div className="flex flex-col md:flex-row gap-6 p-6">
                     <div className="relative w-full md:w-64 h-48 md:h-40 overflow-hidden rounded-lg flex-shrink-0">
                       <motion.img
-                        src={item.image}
+                        src={getImageSrc(item.image, imgNewsImage1)}
                         alt={item.title}
                         className="w-full h-full object-cover"
                         whileHover={{ scale: 1.1 }}
@@ -239,7 +261,7 @@ export function MediaPage() {
                       <h3 className="text-xl text-[#303030] mb-3 group-hover:text-[#13499d] transition-colors">
                         {item.title}
                       </h3>
-                      <p className="text-[#4a5565] mb-4">{item.excerpt}</p>
+                      <p className="text-[#4a5565] mb-4">{item.short_description || item.excerpt}</p>
                       <motion.div 
                         className="text-[#13499d] text-sm flex items-center gap-2 justify-end"
                         whileHover={{ x: -5 }}
@@ -256,23 +278,36 @@ export function MediaPage() {
             </motion.div>
           )}
 
-          {(activeTab === 'manuals' || activeTab === 'images') && (
+          {/* 'manuals' tab removed — content not needed */}
+
+          {activeTab === 'images' && (
             <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              key="images"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
               exit={{ opacity: 0 }}
-              className="text-center py-16"
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3"
             >
-              <motion.div 
-                className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4"
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                <div className="w-12 h-12 border-4 border-[#13499d] border-t-transparent rounded-full" />
-              </motion.div>
-              <h3 className="text-2xl text-gray-600 mb-2">قريباً</h3>
-              <p className="text-gray-500">محتوى {tabs.find(t => t.key === activeTab)?.label} قيد ا��إعداد</p>
+              {mediaLoading && (
+                <div className="col-span-full text-center py-12">جارٍ تحميل الصور...</div>
+              )}
+
+              {mediaError && (
+                <div className="col-span-full text-center py-12 text-red-600">حدث خطأ أثناء جلب الصور.</div>
+              )}
+
+              {!mediaLoading && !mediaError && imageFiles.length === 0 && (
+                <div className="col-span-full text-center py-12">لا توجد صور لعرضها حالياً.</div>
+              )}
+
+              {!mediaLoading && !mediaError && dedupedImageFiles.map((img, idx) => (
+                <motion.div key={img.id || idx} variants={itemVariants} className="overflow-hidden rounded-md bg-white border border-[#e6e6e6]">
+                  <button onClick={() => window.open(img.url, '_blank')} className="w-full h-full block">
+                    <img src={img.url} alt={img.name || `image-${idx}`} className="w-full h-40 object-cover" />
+                  </button>
+                </motion.div>
+              ))}
             </motion.div>
           )}
         </AnimatePresence>

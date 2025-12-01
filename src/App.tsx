@@ -7,11 +7,12 @@ import { ProductsPage } from './components/pages/ProductsPage';
 import { ProductCategoryPage } from './components/pages/ProductCategoryPage';
 import { ProductDetailPage } from './components/pages/ProductDetailPage';
 import { SolutionsPage } from './components/pages/SolutionsPage';
+import SolutionDetailPage from './components/pages/SolutionDetailPage';
 import { ServicesPage } from './components/pages/ServicesPage';
 import { ProjectsPage } from './components/pages/ProjectsPage';
 import { MediaPage } from './components/pages/MediaPage';
-import { NewsDetailPage } from './components/pages/NewsDetailPage';
 import { PartnersPage } from './components/pages/PartnersPage';
+import { NewsDetailPage } from './components/pages/NewsDetailPage';
 import { AboutPage } from './components/pages/AboutPage';
 import { ContactPage } from './components/pages/ContactPage';
 
@@ -23,25 +24,25 @@ function AnimatedRoutes() {
     const path = location.pathname;
     if (path === '/' || path.includes('preview_page')) return 'home';
     if (path.startsWith('/products')) return 'products';
+    if (path === '/partners') return 'partners';
     if (path === '/solutions') return 'solutions';
     if (path === '/services') return 'services';
     if (path === '/projects') return 'projects';
     if (path === '/media') return 'media';
-    if (path === '/partners') return 'partners';
     if (path === '/about') return 'about';
     if (path === '/contact') return 'contact';
     return 'home';
   };
 
-  const handlePageChange = (page: string) => {
+    const handlePageChange = (page: string) => {
     const routes: Record<string, string> = {
       'home': '/',
       'products': '/products',
+      'partners': '/partners',
       'solutions': '/solutions',
       'services': '/services',
       'projects': '/projects',
       'media': '/media',
-      'partners': '/partners',
       'about': '/about',
       'contact': '/contact',
     };
@@ -104,6 +105,16 @@ function AnimatedRoutes() {
                 <SolutionsPage />
               </motion.div>
             } />
+            <Route path="/solutions/:slug" element={
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+              >
+                <SolutionDetailPage />
+              </motion.div>
+            } />
             <Route path="/services" element={
               <motion.div
                 initial={{ opacity: 0, x: 50 }}
@@ -144,6 +155,7 @@ function AnimatedRoutes() {
                 <NewsDetailPage />
               </motion.div>
             } />
+            {/* partners page removed */}
             <Route path="/partners" element={
               <motion.div
                 initial={{ opacity: 0, x: 50 }}
