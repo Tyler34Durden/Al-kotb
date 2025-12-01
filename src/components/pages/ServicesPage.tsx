@@ -4,19 +4,18 @@ import svgPaths from "../../imports/svg-iesjveorhc";
 import imgContainer from "figma:asset/03f677eaac17d26b0938bff53039ae1d04a0d40c.png";
 import { Phone, Users } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
-
-const STRAPI_BASE = 'http://102.213.183.190:1337';
+import { STRAPI_URL } from '../../lib/strapi';
 
 // Resolve icon url from multiple possible Strapi shapes
 function resolveIconUrl(service: any) {
   // shape 1: service.icon.url
-  if (service?.icon?.url) return service.icon.url.startsWith('http') ? service.icon.url : `${STRAPI_BASE}${service.icon.url}`;
+  if (service?.icon?.url) return service.icon.url.startsWith('http') ? service.icon.url : `${STRAPI_URL.replace(/\/$/, '')}${service.icon.url}`;
   // shape 2: service.attributes.icon.data.attributes.url
   const nested = service?.attributes?.icon?.data?.attributes?.url || service?.attributes?.icon?.attributes?.url;
-  if (nested) return nested.startsWith('http') ? nested : `${STRAPI_BASE}${nested}`;
+  if (nested) return nested.startsWith('http') ? nested : `${STRAPI_URL.replace(/\/$/, '')}${nested}`;
   // shape 3: service.icon.data?.attributes?.url
   const nested2 = service?.icon?.data?.attributes?.url;
-  if (nested2) return nested2.startsWith('http') ? nested2 : `${STRAPI_BASE}${nested2}`;
+  if (nested2) return nested2.startsWith('http') ? nested2 : `${STRAPI_URL.replace(/\/$/, '')}${nested2}`;
   return null;
 }
 
@@ -84,7 +83,7 @@ export function ServicesPage() {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    fetch(`${STRAPI_BASE}/api/services?populate=*`)
+    fetch(`${STRAPI_URL.replace(/\/$/, '')}/api/services?populate=*`)
       .then((res) => {
         if (!res.ok) throw new Error(`Status ${res.status}`);
         return res.json();
@@ -174,16 +173,26 @@ export function ServicesPage() {
       {/* Services Grid */}
       <section className="py-12 md:py-16">
         <div className="container mx-auto px-4 max-w-[1200px]">
-          {/* Diagnostics: show fetch status and sample when nothing renders */}
+          {/* Empty state: clean visual when no services are available */}
           {!loading && !error && svcList.length === 0 && (
-            <div className="mb-6 p-3 bg-yellow-50 border border-yellow-200 rounded text-sm text-[#334155]">
-              <div className="font-medium mb-1">ملاحظة تشخيصية: لم تُرجع الخدمات أي عناصر</div>
-              <div>حالة التحميل: {String(loading)}</div>
-              <div>عدد العناصر المستلمة: {svcList?.length ?? 0}</div>
-              <details className="mt-2 text-xs text-[#475569]">
-                <summary>عرض عينة JSON (إن وُجدت)</summary>
-                <pre className="whitespace-pre-wrap break-words mt-2">{JSON.stringify(svcList?.[0] || {}, null, 2)}</pre>
-              </details>
+            <div className="text-center py-16">
+              <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="block w-10 h-10 text-gray-500" fill="none" preserveAspectRatio="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M12 1.33333H4C3.26362 1.33333 2.66667 1.93029 2.66667 2.66667V13.3333C2.66667 14.0697 3.26362 14.6667 4 14.6667H12C12.7364 14.6667 13.3333 14.0697 13.3333 13.3333V2.66667C13.3333 1.93029 12.7364 1.33333 12 1.33333Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333"></path>
+                  <path d="M6 14.6667V12H10V14.6667" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333"></path>
+                  <path d="M5.33333 4H5.34" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333"></path>
+                  <path d="M10.6667 4H10.6733" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333"></path>
+                  <path d="M8 4H8.00667" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333"></path>
+                  <path d="M8 6.66667H8.00667" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333"></path>
+                  <path d="M8 9.33333H8.00667" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333"></path>
+                  <path d="M10.6667 6.66667H10.6733" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333"></path>
+                  <path d="M10.6667 9.33333H10.6733" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333"></path>
+                  <path d="M5.33333 6.66667H5.34" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333"></path>
+                  <path d="M5.33333 9.33333H5.34" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333"></path>
+                </svg>
+              </div>
+              <h3 className="text-2xl text-gray-600 mb-2">لا توجد خدمات</h3>
+              <p className="text-gray-500">لم يتم العثور على خدمات في هذا القسم حالياً.</p>
             </div>
           )}
           <motion.div 

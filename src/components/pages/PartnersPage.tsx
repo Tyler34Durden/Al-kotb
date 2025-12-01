@@ -15,6 +15,7 @@ import {
   TrendingUp
 } from 'lucide-react';
 import { ImageWithFallback } from '../figma/ImageWithFallback';
+import { STRAPI_URL } from '../../lib/strapi';
 
 // We'll fetch partners from Strapi. The API returns objects with `name`, `country`, `since`, `industry` and `description`, plus an `image` object with `url` or `formats`.
 
@@ -23,12 +24,10 @@ export function PartnersPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const STRAPI_HOST = 'http://102.213.183.190:1337';
-
   function toAbsoluteUrl(path?: string | null) {
     if (!path) return null;
     if (path.startsWith('http')) return path;
-    return `${STRAPI_HOST}${path}`;
+    return `${STRAPI_URL.replace(/\/$/, '')}${path}`;
   }
 
   function parseDescription(desc?: string) {
@@ -55,7 +54,7 @@ export function PartnersPage() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${STRAPI_HOST}/api/partners?populate=*`)
+    fetch(`${STRAPI_URL.replace(/\/$/, '')}/api/partners?populate=*`)
       .then(res => res.json())
       .then((payload) => {
         const items = (payload?.data || []).map((d: any) => {

@@ -9,9 +9,6 @@ import imgCard5 from "figma:asset/b7414cfec8643443c97b44b4c24e28249988dfc0.png";
 import imgCard6 from "figma:asset/20336ca1f20d8d809ba7993eee8c5c4d6f67c0d1.png";
 import imgCard7 from "figma:asset/be56acffa3debd40fe117477893a83d9681596d2.png";
 import imgCard8 from "figma:asset/b5bb34718aba6367ba7ca5a373d6eb5079d51e19.png";
-import imgNewsImage1 from "figma:asset/fe961dfa1eae5391f7dc8957c77aee6811709f2e.png";
-import imgNewsImage2 from "figma:asset/a16eb36c62541600ea9a6df9875cf4d8f39b3358.png";
-import imgNewsImage3 from "figma:asset/d1b85c5576554625982a48b25a3caf306992dca1.png";
 import { useNews, useMediaFiles } from '../../hooks/useMedia';
 import { strapiImageUrl } from '../../lib/strapi';
 
@@ -22,11 +19,8 @@ export function MediaPage() {
   // We'll primarily use media files from `useMediaFiles` and filter them for display.
 
   const { data: newsData, error: newsError } = useNews();
-  const fallbackNews = [
-    { id: 1, title: 'إطلاق خط إنتاج جديد من الرافعات الكهربائية', date: '15 أكتوبر 2024', image: imgNewsImage1, excerpt: 'نعلن عن إطلاق سلسلة جديدة من الرافعات الشوكية الكهربائية الصديقة للبيئة' },
-    { id: 2, title: 'توقيع شراكة استراتيجية مع Toyota', date: '8 سبتمبر 2024', image: imgNewsImage2, excerpt: 'شراكة جديدة لتوفير أحدث التقنيات في معدات المناولة' },
-    { id: 3, title: 'افتتاح مركز خدمة جديد في بنغازي', date: '22 أغسطس 2024', image: imgNewsImage3, excerpt: 'توسيع نطاق خدماتنا لتغطية أفضل في شرق ليبيا' }
-  ];
+  // Do not show static/hardcoded news items — rely on Strapi `useNews()` data only.
+  const fallbackNews: any[] = [];
   // Deduplicate news items: prefer slug, then documentId, image.documentId, id, then title+date
   const news = Array.isArray(newsData) && newsData.length ? (() => {
     const seen = new Set<string>();
@@ -248,7 +242,7 @@ export function MediaPage() {
                   <div className="flex flex-col md:flex-row gap-6 p-6">
                     <div className="relative w-full md:w-64 h-48 md:h-40 overflow-hidden rounded-lg flex-shrink-0">
                       <motion.img
-                        src={getImageSrc(item.image, imgNewsImage1)}
+                        src={getImageSrc(item.image, imgContainer)}
                         alt={item.title}
                         className="w-full h-full object-cover"
                         whileHover={{ scale: 1.1 }}

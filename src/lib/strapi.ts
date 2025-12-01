@@ -1,4 +1,6 @@
-const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || "http://102.213.183.190:1337";
+// Normalize the provided STRAPI URL: remove trailing slash and any trailing `/api`
+const _RAW_STRAPI = import.meta.env.VITE_STRAPI_URL || "https://al-kotobco.com/api/";
+const STRAPI_URL = String(_RAW_STRAPI).replace(/\/$/, "").replace(/\/api$/i, "");
 const STRAPI_TOKEN = import.meta.env.VITE_STRAPI_TOKEN || "";
 
 async function strapiFetch(path: string, opts: RequestInit = {}) {

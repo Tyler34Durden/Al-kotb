@@ -162,7 +162,7 @@ export function SectorsPage() {
             {[
               { number: '500+', label: 'مشروع ناجح' },
               { number: '6', label: 'قطاعات متخصصة' },
-              { number: '15+', label: 'سنة خبرة' },
+              { number: '12+', label: 'سنة خبرة' },
               { number: '98%', label: 'رضا العملاء' }
             ].map((stat, index) => (
               <motion.div

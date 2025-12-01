@@ -174,7 +174,7 @@ function Container4() {
 function HomePage10() {
   return (
     <div className="absolute h-[72px] left-0 top-0 w-[224px]" data-name="HomePage">
-      <p className="absolute font-['Cairo:Bold',sans-serif] font-bold leading-[72px] left-[112.65px] not-italic text-[#303030] text-[72px] text-center text-nowrap top-[0.8px] translate-x-[-50%] whitespace-pre">15+</p>
+      <p className="absolute font-['Cairo:Bold',sans-serif] font-bold leading-[72px] left-[112.65px] not-italic text-[#303030] text-[72px] text-center text-nowrap top-[0.8px] translate-x-[-50%] whitespace-pre">12+</p>
     </div>
   );
 }

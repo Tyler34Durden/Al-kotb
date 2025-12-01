@@ -14,7 +14,7 @@ export function HomePage() {
     { number: '24/7', label: 'دعم فني' },
     { number: '9+', label: 'شريك عالمي' },
     { number: '210+', label: 'مشروع مكتمل' },
-    { number: '15+', label: 'سنة من الخبرة' },
+    { number: '12+', label: 'سنة من الخبرة' },
   ];
 
   const services = [
