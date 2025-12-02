@@ -74,10 +74,15 @@ export function Header({ currentPage, onPageChange }: HeaderProps) {
 
           {/* Logo */}
           <motion.div
-            className="flex-shrink-0 w-40 md:w-48 lg:w-52 order-2"
+            role="button"
+            tabIndex={0}
+            onClick={() => handleNavClick('home')}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleNavClick('home'); }}
+            className="flex-shrink-0 w-40 md:w-48 lg:w-52 order-2 cursor-pointer"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
+            aria-label="الانتقال إلى الصفحة الرئيسية"
           >
             <svg className="w-full h-auto" viewBox="0 0 213 69" fill="none" preserveAspectRatio="xMidYMid meet">
               <g>
