@@ -27,7 +27,16 @@ function strapiImageUrl(media: any) {
   if (typeof media === "string") {
     // handle absolute (http(s)://), protocol-relative (//host/...), and relative (/uploads/...)
     if (media.startsWith("http")) return media;
-    if (media.startsWith("//")) return `${new URL(STRAPI_URL).protocol}${media}`;
+    if (media.startsWith("//")) {
+      // prefer the protocol from STRAPI_URL, but fall back to current page protocol or https
+      let proto = 'https:';
+      try {
+        proto = new URL(STRAPI_URL).protocol || proto;
+      } catch (e) {
+        if (typeof window !== 'undefined' && window.location && window.location.protocol) proto = window.location.protocol;
+      }
+      return `${proto}${media}`;
+    }
     return `${STRAPI_URL.replace(/\/$/, "")}${media.startsWith("/") ? media : `/${media}`}`;
   }
   if (media?.data) {
@@ -44,7 +53,15 @@ function ensureFullUrl(url: string) {
   // already fully qualified
   if (url.startsWith("http")) return url;
   // protocol-relative (//host/path) — preserve protocol from configured STRAPI_URL
-  if (url.startsWith("//")) return `${new URL(STRAPI_URL).protocol}${url}`;
+  if (url.startsWith("//")) {
+    let proto = 'https:';
+    try {
+      proto = new URL(STRAPI_URL).protocol || proto;
+    } catch (e) {
+      if (typeof window !== 'undefined' && window.location && window.location.protocol) proto = window.location.protocol;
+    }
+    return `${proto}${url}`;
+  }
   // relative path: prepend normalized STRAPI_URL
   return `${STRAPI_URL.replace(/\/$/, "")}${url.startsWith("/") ? url : `/${url}`}`;
 }
