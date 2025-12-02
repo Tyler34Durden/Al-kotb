@@ -24,7 +24,12 @@ async function strapiFetch(path: string, opts: RequestInit = {}) {
 function strapiImageUrl(media: any) {
   // media may be a string, an object with attributes.url, or have data array
   if (!media) return undefined;
-  if (typeof media === "string") return media.startsWith("http") ? media : `${STRAPI_URL}${media}`;
+  if (typeof media === "string") {
+    // handle absolute (http(s)://), protocol-relative (//host/...), and relative (/uploads/...)
+    if (media.startsWith("http")) return media;
+    if (media.startsWith("//")) return `${new URL(STRAPI_URL).protocol}${media}`;
+    return `${STRAPI_URL.replace(/\/$/, "")}${media.startsWith("/") ? media : `/${media}`}`;
+  }
   if (media?.data) {
     const first = Array.isArray(media.data) ? media.data[0] : media.data;
     return first?.attributes?.url ? ensureFullUrl(first.attributes.url) : undefined;
@@ -36,7 +41,11 @@ function strapiImageUrl(media: any) {
 
 function ensureFullUrl(url: string) {
   if (!url) return undefined;
+  // already fully qualified
   if (url.startsWith("http")) return url;
+  // protocol-relative (//host/path) — preserve protocol from configured STRAPI_URL
+  if (url.startsWith("//")) return `${new URL(STRAPI_URL).protocol}${url}`;
+  // relative path: prepend normalized STRAPI_URL
   return `${STRAPI_URL.replace(/\/$/, "")}${url.startsWith("/") ? url : `/${url}`}`;
 }
 
